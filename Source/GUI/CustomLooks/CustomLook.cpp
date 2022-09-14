@@ -113,7 +113,7 @@ namespace juce
 
         float newWidth = 6.f;
         if (isHovered)
-            newWidth = std::max((double)6.f, (isHorizontal ? width : height) * 0.15);
+            newWidth = 8.f;
         else
             newWidth = 6.f;
 

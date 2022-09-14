@@ -29,9 +29,13 @@ DiodineAudioProcessorEditor::DiodineAudioProcessorEditor (DiodineAudioProcessor&
     properties.setStorageParameters(fileOptions);
 
     // Set plugin window dimensions and scale
+    //getConstrainer()->setFixedAspectRatio((double)WIDTH / (double)HEIGHT);
     setSize(double(WIDTH), double(HEIGHT));
     juce::Rectangle<int> defaultSize(WIDTH, HEIGHT);
     windowLayout.setBounds(defaultSize);
+
+    setResizable(true, false);
+    setResizeLimits(WIDTH, HEIGHT, WIDTH * 2, HEIGHT * 2);
 
     const int skin = properties.getUserSettings()->getIntValue("Skin", 0);
     guiData.updateLnf(skin);
@@ -49,4 +53,5 @@ void DiodineAudioProcessorEditor::paint (juce::Graphics& g)
 }
 
 void DiodineAudioProcessorEditor::resized() {
+    windowLayout.setBounds(0, 0, getWidth(), getHeight());
 }
