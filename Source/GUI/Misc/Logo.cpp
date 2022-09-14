@@ -18,7 +18,7 @@ Logo::Logo(xynth::GuiData& g) : guiData(g) {
 void Logo::paint(juce::Graphics& g) {
     auto rect = getLocalBounds();
     guiData.getLnf().drawSectionBackground(g, rect);
-    logo_svg->drawWithin(g, rect.toFloat().reduced(8, 8), juce::RectanglePlacement::centred, 1.f);
+    logo_svg->drawWithin(g, rect.toFloat().reduced(12, 12), juce::RectanglePlacement::centred, 1.f);
     logo_svg->replaceColour(juce::Colours::black, WDYM::FgColor);
 
 }

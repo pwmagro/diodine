@@ -68,15 +68,18 @@ VoltageDisplay::VoltageDisplay(xynth::GuiData& g) : guiData(g)
 
 void VoltageDisplay::paint(juce::Graphics& g) {
     auto rect = getLocalBounds();
-    guiData.getLnf().drawSectionBackground(g, rect);
+    auto& lnf = guiData.getLnf();
+    lnf.drawSectionBackground(g, rect);
     rect.reduce(10, 10);
+
+    auto satSliderRect = rect.removeFromLeft(40).withTrimmedBottom(80);
 
     auto labelRects = rect.removeFromBottom(20);
     auto vfLabelRect = labelRects.withTrimmedLeft(rect.getWidth() / 2).withTrimmedLeft(10);
     auto vbLabelRect = labelRects.withTrimmedRight(rect.getWidth() / 2).withTrimmedLeft(10);
 
-    g.setFont(guiData.getLnf().getCustomFontRegular().withHeight(18));
-    g.setColour(guiData.getLnf().getAccent2());
+    g.setFont(lnf.getCustomFontRegular().withHeight(18));
+    g.setColour(lnf.getAccent2());
     g.drawText(((juce::String)VF_NAME).toLowerCase(), vfLabelRect, juce::Justification::left);
     g.drawText(((juce::String)VB_NAME).toLowerCase(), vbLabelRect, juce::Justification::left);
     // TODO draw sideways text for saturation bar name
@@ -84,7 +87,6 @@ void VoltageDisplay::paint(juce::Graphics& g) {
     auto sliderRects = rect.removeFromBottom(40);
     auto vfSliderRect = sliderRects.withTrimmedLeft(rect.getWidth() / 2);
     auto vbSliderRect = sliderRects.withTrimmedRight(rect.getWidth() / 2);
-    auto satSliderRect = rect.removeFromLeft(40).withTrimmedBottom(30);
 
     auto satTextRect = satSliderRect.translated(0, satSliderRect.getHeight() - 7.f);
     g.drawText(((juce::String)SAT_NAME).toLowerCase(), satTextRect, juce::Justification::centredTop);
@@ -93,8 +95,8 @@ void VoltageDisplay::paint(juce::Graphics& g) {
     vbSlider.setBounds(vbSliderRect);
     satSlider.setBounds(satSliderRect);
 
-    g.setFont(guiData.getLnf().getCustomFontRegular().withHeight(25));
-    g.setColour(guiData.getLnf().getAccent1());
+    g.setFont(lnf.getCustomFontRegular().withHeight(25));
+    g.setColour(lnf.getAccent1());
 
     auto vfSliderPos = vfSlider.getPositionOfValue(vfSlider.getValue());
     auto vbSliderPos = vbSlider.getPositionOfValue(vbSlider.getValue());
@@ -114,4 +116,6 @@ void VoltageDisplay::paint(juce::Graphics& g) {
     juce::Rectangle<float> vbTextRect(std::min(std::max((vbSliderPos - 20.f), vbx + 10.f), vbx + width - 90.f), vby, newWidth, 25.f);
 
     g.drawText(vbSlider.getTextFromValue(vbSlider.getValue()), vbTextRect, juce::Justification::centred);
+
+    lnf.drawGraphBackground(g, rect.toFloat().withTrimmedBottom(20.f).reduced(10.f), 1);
 }

@@ -27,10 +27,10 @@ namespace juce
 
     void CustomLook::drawGraphBackground(Graphics& g, Rectangle<float> area, float)
     {
-        g.setColour(getBase1());
+        g.setColour(getNeutral1());
         g.fillRoundedRectangle(area, 8.f);
 
-        g.setColour(getNeutral1().withAlpha(0.5f));
+        g.setColour(getAccent2().withAlpha(0.5f));
         g.drawLine(area.getCentreX(), area.getY(), area.getCentreX(), area.getBottom(), 2.f);
         g.drawLine(area.getX(), area.getCentreY(), area.getRight(), area.getCentreY(), 2.f);
     }

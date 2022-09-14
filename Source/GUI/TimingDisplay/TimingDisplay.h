@@ -13,7 +13,6 @@
 #include "../Utils/GuiData.h"
 
 #include "TimingGraph.h"
-#include "TrrSlider.h"
 
 class TimingDisplay : public juce::Component {
 public:

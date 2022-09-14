@@ -41,27 +41,17 @@
           <FILE id="qCKJpV" name="TimingDisplay.h" compile="0" resource="0" file="Source/GUI/TimingDisplay/TimingDisplay.h"/>
           <FILE id="hoLTsQ" name="TimingGraph.cpp" compile="1" resource="0" file="Source/GUI/TimingDisplay/TimingGraph.cpp"/>
           <FILE id="ikt86N" name="TimingGraph.h" compile="0" resource="0" file="Source/GUI/TimingDisplay/TimingGraph.h"/>
-          <FILE id="IimTql" name="TrrSlider.cpp" compile="1" resource="0" file="Source/GUI/TimingDisplay/TrrSlider.cpp"/>
-          <FILE id="wV6nMw" name="TrrSlider.h" compile="0" resource="0" file="Source/GUI/TimingDisplay/TrrSlider.h"/>
         </GROUP>
         <GROUP id="{C0E74794-5111-3275-CAEB-A57E1B13444C}" name="CircuitDisplay">
           <FILE id="jxu3xn" name="CircuitDisplay.cpp" compile="1" resource="0"
                 file="Source/GUI/CircuitDisplay/CircuitDisplay.cpp"/>
           <FILE id="pC8JeR" name="CircuitDisplay.h" compile="0" resource="0"
                 file="Source/GUI/CircuitDisplay/CircuitDisplay.h"/>
-          <FILE id="HVVqo4" name="GainSlider.cpp" compile="1" resource="0" file="Source/GUI/CircuitDisplay/GainSlider.cpp"/>
-          <FILE id="jHIW9z" name="GainSlider.h" compile="0" resource="0" file="Source/GUI/CircuitDisplay/GainSlider.h"/>
-          <FILE id="bUFxyA" name="MixSlider.cpp" compile="1" resource="0" file="Source/GUI/CircuitDisplay/MixSlider.cpp"/>
-          <FILE id="sZYIE5" name="MixSlider.h" compile="0" resource="0" file="Source/GUI/CircuitDisplay/MixSlider.h"/>
           <FILE id="bapsSo" name="SwitchButton.cpp" compile="1" resource="0"
                 file="Source/GUI/CircuitDisplay/SwitchButton.cpp"/>
           <FILE id="cBFymR" name="SwitchButton.h" compile="0" resource="0" file="Source/GUI/CircuitDisplay/SwitchButton.h"/>
         </GROUP>
         <GROUP id="{3C4F0661-D38E-59D2-6B51-6105B7821D8A}" name="VoltageDisplay">
-          <FILE id="hYhssf" name="VdSlider.cpp" compile="1" resource="0" file="Source/GUI/VoltageDisplay/VdSlider.cpp"/>
-          <FILE id="JM2jd7" name="VdSlider.h" compile="0" resource="0" file="Source/GUI/VoltageDisplay/VdSlider.h"/>
-          <FILE id="DrBV4c" name="VfSlider.cpp" compile="1" resource="0" file="Source/GUI/VoltageDisplay/VfSlider.cpp"/>
-          <FILE id="nvt2sE" name="VfSlider.h" compile="0" resource="0" file="Source/GUI/VoltageDisplay/VfSlider.h"/>
           <FILE id="WgXFfQ" name="VoltageDisplay.cpp" compile="1" resource="0"
                 file="Source/GUI/VoltageDisplay/VoltageDisplay.cpp"/>
           <FILE id="jIOOeW" name="VoltageDisplay.h" compile="0" resource="0"

@@ -12,8 +12,6 @@
 #include <JuceHeader.h>
 #include "../Utils/GuiData.h"
 
-#include "GainSlider.h"
-#include "MixSlider.h"
 #include "SwitchButton.h"
 
 class CircuitDisplay : public juce::Component {

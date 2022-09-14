@@ -12,8 +12,6 @@
 #include <JuceHeader.h>
 #include "../Utils/GuiData.h"
 
-#include "VdSlider.h"
-#include "VfSlider.h"
 #include "VoltageGraph.h"
 
 class VoltageDisplay : public juce::Component {

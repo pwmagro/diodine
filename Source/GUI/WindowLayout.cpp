@@ -41,11 +41,12 @@ void WindowLayout::paint (juce::Graphics& g)
     g.setColour(WDYM::OutlineColor);
     g.fillRect(rect);
 
-    auto topRect = rect.removeFromTop(HEIGHT / 3.f);
-    circuitDisplay.setBounds(topRect.removeFromRight(WIDTH * 2.f / 3.f).reduced(spacing, spacing));
-    logo.setBounds(topRect.removeFromTop(topRect.getHeight() / 2.f).reduced(spacing, spacing));
-    oscilloscopeDisplay.setBounds(topRect.reduced(spacing, spacing));
-    voltageDisplay.setBounds(rect.removeFromLeft(WIDTH / 2.f).reduced(spacing, spacing));
+    auto topRect = rect.removeFromTop(rect.getHeight() / 3.f);
+    auto topLeftRect = topRect.removeFromLeft(300.f);
+    logo.setBounds(topLeftRect.removeFromTop(100.f).reduced(spacing, spacing));
+    oscilloscopeDisplay.setBounds(topLeftRect.reduced(spacing, spacing));
+    circuitDisplay.setBounds(topRect.reduced(spacing, spacing));
+    voltageDisplay.setBounds(rect.removeFromLeft(rect.getWidth() / 2.f).reduced(spacing, spacing));
     timingDisplay.setBounds(rect.reduced(spacing, spacing));
 }
 
