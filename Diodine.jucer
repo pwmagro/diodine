@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="WcF3Wp" name="Diodine" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="0" jucerFormatVersion="1"
+              companyName="WDYM" companyCopyright="Peter Magro" companyWebsite="www.petermagro.com">
+  <MAINGROUP id="FnOQe2" name="Diodine">
+    <GROUP id="{C5057EFF-3CD6-3CEC-C90A-7DD871A5C714}" name="Assets">
+      <FILE id="HHANNL" name="diodine_logo.svg" compile="0" resource="1"
+            file="Assets/diodine_logo.svg"/>
+      <FILE id="MTvL4m" name="Raleway-Light.ttf" compile="0" resource="1"
+            file="Assets/Raleway-Light.ttf"/>
+      <FILE id="M4tj0S" name="Raleway-Medium.ttf" compile="0" resource="1"
+            file="Assets/Raleway-Medium.ttf"/>
+      <FILE id="kN1253" name="Raleway-Regular.ttf" compile="0" resource="1"
+            file="Assets/Raleway-Regular.ttf"/>
+    </GROUP>
+    <GROUP id="{FD367AE1-1514-EB27-1172-5A68A3C8C2B0}" name="Source">
+      <GROUP id="{CE2EA949-80A8-4BE1-5C1E-605A036B1C7B}" name="Common">
+        <FILE id="RinBsu" name="Constants.cpp" compile="1" resource="0" file="Source/Common/Constants.cpp"/>
+        <FILE id="ROFvvY" name="Constants.h" compile="0" resource="0" file="Source/Common/Constants.h"/>
+      </GROUP>
+      <GROUP id="{3201A1A2-EC8D-E8E9-1D07-40349F8EF37E}" name="GUI">
+        <GROUP id="{321EBD7A-AB34-2B80-B28C-D2A925B5D016}" name="OscilloscopeDisplay">
+          <FILE id="j2a5ST" name="OscilloscopeDisplay.cpp" compile="1" resource="0"
+                file="Source/GUI/OscilloscopeDisplay/OscilloscopeDisplay.cpp"/>
+          <FILE id="VrIcBk" name="OscilloscopeDisplay.h" compile="0" resource="0"
+                file="Source/GUI/OscilloscopeDisplay/OscilloscopeDisplay.h"/>
+        </GROUP>
+        <GROUP id="{4D174CC2-05B4-0AFD-A67E-685B0A0964F3}" name="CustomLooks">
+          <FILE id="KWJeDa" name="CustomLook.cpp" compile="1" resource="0" file="Source/GUI/CustomLooks/CustomLook.cpp"/>
+          <FILE id="fp7OpF" name="CustomLook.h" compile="0" resource="0" file="Source/GUI/CustomLooks/CustomLook.h"/>
+          <FILE id="Urw06c" name="Styles.h" compile="0" resource="0" file="Source/GUI/CustomLooks/Styles.h"/>
+        </GROUP>
+        <GROUP id="{E712B4B0-8D74-4C7B-9D0D-ED5F56F404D1}" name="Misc">
+          <FILE id="H6qgXU" name="Logo.cpp" compile="1" resource="0" file="Source/GUI/Misc/Logo.cpp"/>
+          <FILE id="sECsRH" name="Logo.h" compile="0" resource="0" file="Source/GUI/Misc/Logo.h"/>
+        </GROUP>
+        <GROUP id="{2BA52A12-4669-EBF0-6B59-413219D86A51}" name="TimingDisplay">
+          <FILE id="jBUMV6" name="TimingDisplay.cpp" compile="1" resource="0"
+                file="Source/GUI/TimingDisplay/TimingDisplay.cpp"/>
+          <FILE id="qCKJpV" name="TimingDisplay.h" compile="0" resource="0" file="Source/GUI/TimingDisplay/TimingDisplay.h"/>
+          <FILE id="hoLTsQ" name="TimingGraph.cpp" compile="1" resource="0" file="Source/GUI/TimingDisplay/TimingGraph.cpp"/>
+          <FILE id="ikt86N" name="TimingGraph.h" compile="0" resource="0" file="Source/GUI/TimingDisplay/TimingGraph.h"/>
+          <FILE id="IimTql" name="TrrSlider.cpp" compile="1" resource="0" file="Source/GUI/TimingDisplay/TrrSlider.cpp"/>
+          <FILE id="wV6nMw" name="TrrSlider.h" compile="0" resource="0" file="Source/GUI/TimingDisplay/TrrSlider.h"/>
+        </GROUP>
+        <GROUP id="{C0E74794-5111-3275-CAEB-A57E1B13444C}" name="CircuitDisplay">
+          <FILE id="jxu3xn" name="CircuitDisplay.cpp" compile="1" resource="0"
+                file="Source/GUI/CircuitDisplay/CircuitDisplay.cpp"/>
+          <FILE id="pC8JeR" name="CircuitDisplay.h" compile="0" resource="0"
+                file="Source/GUI/CircuitDisplay/CircuitDisplay.h"/>
+          <FILE id="HVVqo4" name="GainSlider.cpp" compile="1" resource="0" file="Source/GUI/CircuitDisplay/GainSlider.cpp"/>
+          <FILE id="jHIW9z" name="GainSlider.h" compile="0" resource="0" file="Source/GUI/CircuitDisplay/GainSlider.h"/>
+          <FILE id="bUFxyA" name="MixSlider.cpp" compile="1" resource="0" file="Source/GUI/CircuitDisplay/MixSlider.cpp"/>
+          <FILE id="sZYIE5" name="MixSlider.h" compile="0" resource="0" file="Source/GUI/CircuitDisplay/MixSlider.h"/>
+          <FILE id="bapsSo" name="SwitchButton.cpp" compile="1" resource="0"
+                file="Source/GUI/CircuitDisplay/SwitchButton.cpp"/>
+          <FILE id="cBFymR" name="SwitchButton.h" compile="0" resource="0" file="Source/GUI/CircuitDisplay/SwitchButton.h"/>
+        </GROUP>
+        <GROUP id="{3C4F0661-D38E-59D2-6B51-6105B7821D8A}" name="VoltageDisplay">
+          <FILE id="hYhssf" name="VdSlider.cpp" compile="1" resource="0" file="Source/GUI/VoltageDisplay/VdSlider.cpp"/>
+          <FILE id="JM2jd7" name="VdSlider.h" compile="0" resource="0" file="Source/GUI/VoltageDisplay/VdSlider.h"/>
+          <FILE id="DrBV4c" name="VfSlider.cpp" compile="1" resource="0" file="Source/GUI/VoltageDisplay/VfSlider.cpp"/>
+          <FILE id="nvt2sE" name="VfSlider.h" compile="0" resource="0" file="Source/GUI/VoltageDisplay/VfSlider.h"/>
+          <FILE id="WgXFfQ" name="VoltageDisplay.cpp" compile="1" resource="0"
+                file="Source/GUI/VoltageDisplay/VoltageDisplay.cpp"/>
+          <FILE id="jIOOeW" name="VoltageDisplay.h" compile="0" resource="0"
+                file="Source/GUI/VoltageDisplay/VoltageDisplay.h"/>
+          <FILE id="aikX2d" name="VoltageGraph.cpp" compile="1" resource="0"
+                file="Source/GUI/VoltageDisplay/VoltageGraph.cpp"/>
+          <FILE id="By0Uj4" name="VoltageGraph.h" compile="0" resource="0" file="Source/GUI/VoltageDisplay/VoltageGraph.h"/>
+        </GROUP>
+        <GROUP id="{FEF40863-54C4-BC82-141C-A65D55A1F11C}" name="About">
+          <FILE id="Ek6Y9p" name="AboutOverlay.cpp" compile="1" resource="0"
+                file="Source/GUI/About/AboutOverlay.cpp"/>
+          <FILE id="yri7rI" name="AboutOverlay.h" compile="0" resource="0" file="Source/GUI/About/AboutOverlay.h"/>
+          <FILE id="omaVdr" name="AboutWindow.cpp" compile="1" resource="0" file="Source/GUI/About/AboutWindow.cpp"/>
+          <FILE id="JDgUAg" name="AboutWindow.h" compile="0" resource="0" file="Source/GUI/About/AboutWindow.h"/>
+          <FILE id="LE1Kqe" name="WebsiteButton.cpp" compile="1" resource="0"
+                file="Source/GUI/About/WebsiteButton.cpp"/>
+          <FILE id="skL849" name="WebsiteButton.h" compile="0" resource="0" file="Source/GUI/About/WebsiteButton.h"/>
+        </GROUP>
+        <GROUP id="{A734EFA1-AB65-AD1C-026C-CCAA9686329B}" name="Utils">
+          <FILE id="zFR84C" name="FullSlider.cpp" compile="1" resource="0" file="Source/GUI/Utils/FullSlider.cpp"/>
+          <FILE id="SBAr5n" name="FullSlider.h" compile="0" resource="0" file="Source/GUI/Utils/FullSlider.h"/>
+          <FILE id="tqLRFi" name="GuiData.h" compile="0" resource="0" file="Source/GUI/Utils/GuiData.h"/>
+        </GROUP>
+        <FILE id="Kkmv3P" name="WindowLayout.cpp" compile="1" resource="0"
+              file="Source/GUI/WindowLayout.cpp"/>
+        <FILE id="Fhit7p" name="WindowLayout.h" compile="0" resource="0" file="Source/GUI/WindowLayout.h"/>
+      </GROUP>
+      <GROUP id="{34A6200E-EDCF-D730-86D5-261CCADFF727}" name="DSP">
+        <FILE id="XG2NFx" name="Diode.cpp" compile="1" resource="0" file="Source/DSP/Diode.cpp"/>
+        <FILE id="yKWZxS" name="Diode.h" compile="0" resource="0" file="Source/DSP/Diode.h"/>
+      </GROUP>
+      <FILE id="AtTwJI" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="NsAQO6" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="ppEAzr" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="fxEQYO" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <VS2022 targetFolder="Builds/VisualStudio2022">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Diodine"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Diodine"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2022>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+</JUCERPROJECT>
