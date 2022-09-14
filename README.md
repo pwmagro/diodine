@@ -1,4 +1,5 @@
-# diodine
+<img src="https://user-images.githubusercontent.com/2028181/190067807-968b97f3-7624-452b-83de-4a14e7e11687.png" height=50% width=50%>
+
 a distortion VST based on physical diode characteristics
 
 currently supported: \
@@ -13,5 +14,6 @@ planned: \
 - model reverse recovery w/ variable t_rr
 - waveshaper graph to show forward/reverse voltage
 - reverse recovery graph to show i_diode over t_rr
+
   - w/ variable load impedance
 - circuit diagram w/ interactive switches, gain, mix
