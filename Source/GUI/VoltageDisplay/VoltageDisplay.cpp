@@ -9,6 +9,7 @@
 */
 
 #include "VoltageDisplay.h"
+#include <cmath>
 
 
 VoltageDisplay::VoltageDisplay(xynth::GuiData& g) : guiData(g)
@@ -117,5 +118,32 @@ void VoltageDisplay::paint(juce::Graphics& g) {
 
     g.drawText(vbSlider.getTextFromValue(vbSlider.getValue()), vbTextRect, juce::Justification::centred);
 
-    lnf.drawGraphBackground(g, rect.toFloat().withTrimmedBottom(20.f).reduced(10.f), 1);
+    drawWaveshaperLine(rect, g);
+    
+}
+
+void VoltageDisplay::drawWaveshaperLine(juce::Rectangle<int> rect, juce::Graphics& g) {
+    auto& lnf = guiData.getLnf();
+    rect.reduce(10, 10);
+    rect.removeFromBottom(20.f);
+    auto gain = guiData.audioProcessor.treeState.getRawParameterValue(GAIN_ID)->load();
+    lnf.drawGraphBackground(g, rect.toFloat(), gain);
+    waveshape.clear();
+    auto& apvts = guiData.audioProcessor.treeState;
+    auto firstPoint = juce::Point<float>(
+        rect.getX(),
+        rect.getCentreY() - (WDYM::Diode::waveshape(-1, apvts) * rect.getHeight() / 2.f));
+    waveshape.startNewSubPath(firstPoint);
+    for (float i = -0.98; i <= 1.001f; i += 0.02) {
+        auto point = juce::Point<float>(
+            rect.getCentreX() + (i * rect.getWidth() / 2),
+            rect.getCentreY() - (WDYM::Diode::waveshape(i, apvts) * rect.getHeight() / 2.f) );
+
+        waveshape.lineTo(point);
+    }
+    g.setColour(WDYM::FgColor);
+    g.strokePath(waveshape, juce::PathStrokeType(4.f, juce::PathStrokeType::curved));
+
+    g.setColour(WDYM::TextColor.darker(2));
+    g.drawRoundedRectangle(rect.toFloat().expanded(2.f), 10.f, 4.f);
 }

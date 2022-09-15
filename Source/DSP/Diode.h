@@ -19,13 +19,10 @@ namespace WDYM {
         ~Diode();
         void init(double sampleRate, int samplesPerBlock);
         void process(juce::AudioBuffer<float>& buffer, juce::AudioProcessorValueTreeState &apvts);
+        static float waveshape(float x, juce::AudioProcessorValueTreeState& apvts);
 
     private:
-        float wsAsym(float x);
-        float wsSym(float x);
-        void recover(juce::AudioBuffer<float>& buffer);
-
-        struct {
+        typedef struct {
             bool diode1 = true;
             bool diode2 = false;
             float vf = 0;
@@ -34,7 +31,14 @@ namespace WDYM {
             float gain = 0;
             float sat = 0;
             float mix = 1;
-        } diodeProperties;
+        } DiodeProperties_t;
+
+        static float wsAsym(float x, DiodeProperties_t& diodeProperties);
+        static float wsSym(float x, DiodeProperties_t& diodeProperties);
+        void recover(juce::AudioBuffer<float>& buffer);
+
+
+        DiodeProperties_t diodeProperties;
         
         float samplesPerMs;
 

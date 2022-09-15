@@ -25,14 +25,28 @@ namespace juce
         g.fillRoundedRectangle(area.toFloat(), 5.f);
     }
 
-    void CustomLook::drawGraphBackground(Graphics& g, Rectangle<float> area, float)
+    void CustomLook::drawGraphBackground(Graphics& g, Rectangle<float> area, float amplitude = 1)
     {
+        float lineFreq = std::max(((int)(amplitude + 5) / 5), 1);
+
         g.setColour(getNeutral1());
         g.fillRoundedRectangle(area, 8.f);
 
         g.setColour(getAccent2().withAlpha(0.5f));
         g.drawLine(area.getCentreX(), area.getY(), area.getCentreX(), area.getBottom(), 2.f);
         g.drawLine(area.getX(), area.getCentreY(), area.getRight(), area.getCentreY(), 2.f);
+
+        for (float i = 0; i < amplitude; i += lineFreq) {
+            auto x = area.getWidth() * i / (amplitude * 2);
+            g.drawLine(area.getCentreX() + x, area.getY(), area.getCentreX() + x, area.getBottom(), 1.f);
+            g.drawLine(area.getCentreX() - x, area.getY(), area.getCentreX() - x, area.getBottom(), 1.f);
+        }
+
+        for (float j = 0; j <= amplitude; j += lineFreq) {
+            auto y = area.getHeight() * j / (amplitude * 2);
+            g.drawLine(area.getX(), area.getCentreY() + y, area.getRight(), area.getCentreY() + y, 1.f);
+            g.drawLine(area.getX(), area.getCentreY() - y, area.getRight(), area.getCentreY() - y, 1.f);
+        }
     }
 
     void CustomLook::drawGraphForeground(Graphics& g, Rectangle<float> area)

@@ -11,6 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "../Utils/GuiData.h"
+#include "../Utils/FullSlider.h"
 
 #include "SwitchButton.h"
 
@@ -20,7 +21,7 @@ public:
     void paint(juce::Graphics& g);
 
 private:
-    //GainSlider gainSlider;
+    xynth::FullSlider gainSlider;
     //MixSlider mixSlider;
     //SwitchButton diode1Switch;
     //SwitchButton diode2Switch;

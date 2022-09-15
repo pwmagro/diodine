@@ -45,7 +45,7 @@ namespace WDYM {
                 auto channelRd = buffer.getReadPointer(c);
 
                 for (int s = 0; s < sm; s++) {
-                    channelWr[s] = ((1 - diodeProperties.mix) * channelRd[s]) + (diodeProperties.mix * wsSym(channelRd[s]));
+                    channelWr[s] = ((1 - diodeProperties.mix) * channelRd[s]) + (diodeProperties.mix * wsSym(channelRd[s], diodeProperties));
                 }
             }
         }
@@ -55,7 +55,7 @@ namespace WDYM {
                 auto channelRd = buffer.getReadPointer(c);
 
                 for (int s = 0; s < sm; s++) {
-                    channelWr[s] = ((1 - diodeProperties.mix) * channelRd[s]) + (diodeProperties.mix * wsAsym(channelRd[s]));
+                    channelWr[s] = ((1 - diodeProperties.mix) * channelRd[s]) + (diodeProperties.mix * wsAsym(channelRd[s], diodeProperties));
                 }
             }
         }
@@ -65,7 +65,7 @@ namespace WDYM {
                 auto channelRd = buffer.getReadPointer(c);
 
                 for (int s = 0; s < sm; s++) {
-                    channelWr[s] = -(((1 - diodeProperties.mix) * channelRd[s]) + (diodeProperties.mix * wsAsym(channelRd[s])));
+                    channelWr[s] = -(((1 - diodeProperties.mix) * channelRd[s]) + (diodeProperties.mix * wsAsym(channelRd[s], diodeProperties)));
                 }
             }
         }
@@ -81,9 +81,7 @@ namespace WDYM {
         }
     }
 
-    float Diode::wsAsym(float x) {
-        // Saturate
-        x = std::tanh((diodeProperties.sat + 0.1) * x) / (std::tanh(diodeProperties.sat + 0.1) * (diodeProperties.sat / 10.f + 1));
+    float Diode::wsAsym(float x, DiodeProperties_t& diodeProperties) {
 
         // Gain
         float s = x * (1 + diodeProperties.gain);
@@ -105,14 +103,15 @@ namespace WDYM {
         x = std::max(o3, -1.f);
         x = std::min(x, 1.f);
 
+        // Saturate
+        x = std::tanh((diodeProperties.sat + 0.1) * x) / (std::tanh(diodeProperties.sat + 0.1));
+
 
         return x;
 
     }
 
-    float Diode::wsSym(float x) {
-        // Saturate
-        x = std::tanh((diodeProperties.sat + 0.1) * x) / (std::tanh(diodeProperties.sat + 0.1) * (diodeProperties.sat / 10.f + 1));
+    float Diode::wsSym(float x, DiodeProperties_t& diodeProperties) {
 
         // Gain
         float s = x * (1 + diodeProperties.gain);
@@ -131,11 +130,36 @@ namespace WDYM {
         // Clip
         x = std::min(o2, 1.f);
 
+        // Saturate
+        x = std::tanh((diodeProperties.sat + 0.1) * x) / (std::tanh(diodeProperties.sat + 0.1));
 
         return x;
     }
 
     void Diode::recover(juce::AudioBuffer<float>& buffer) {
 
+    }
+
+    float Diode::waveshape(float x, juce::AudioProcessorValueTreeState& apvts) {
+        DiodeProperties_t diodeProperties;
+        diodeProperties.diode1 = apvts.getRawParameterValue(DIODE_1_ID)->load();
+        diodeProperties.diode2 = apvts.getRawParameterValue(DIODE_2_ID)->load();
+        diodeProperties.vf = apvts.getRawParameterValue(VF_ID)->load();
+        diodeProperties.vb = apvts.getRawParameterValue(VB_ID)->load();
+        diodeProperties.trr = apvts.getRawParameterValue(TRR_ID)->load();
+        diodeProperties.gain = apvts.getRawParameterValue(GAIN_ID)->load();
+        diodeProperties.sat = apvts.getRawParameterValue(SAT_ID)->load() * 10;
+        diodeProperties.mix = apvts.getRawParameterValue(MIX_ID)->load();
+
+        if (diodeProperties.diode1 && diodeProperties.diode2) {
+            return wsSym(x, diodeProperties);
+        }
+        if (diodeProperties.diode1) {
+            return wsAsym(x, diodeProperties);
+        }
+        if (diodeProperties.diode2) {
+            return -wsAsym(x, diodeProperties);
+        }
+        else return 0;
     }
 }

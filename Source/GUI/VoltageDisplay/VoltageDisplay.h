@@ -30,4 +30,7 @@ private:
     //VoltageGraph voltageGraph;
 
     xynth::GuiData& guiData;
+
+    void drawWaveshaperLine(juce::Rectangle<int> rect, juce::Graphics& g);
+    juce::Path waveshape;
 };
