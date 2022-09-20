@@ -22,9 +22,27 @@ public:
 
 private:
     xynth::FullSlider gainSlider;
-    //MixSlider mixSlider;
-    //SwitchButton diode1Switch;
-    //SwitchButton diode2Switch;
+    xynth::FullSlider mixSlider;
+
+    juce::DrawableButton diode1Switch;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> diode1Attachment;
+
+    juce::DrawableButton diode2Switch;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> diode2Attachment;
+
+    struct {
+        std::unique_ptr<juce::XmlElement> diode_1_open_xml;
+        std::unique_ptr<juce::Drawable>   diode_1_open;
+        std::unique_ptr<juce::XmlElement> diode_2_open_xml;
+        std::unique_ptr<juce::Drawable>   diode_2_open;
+        std::unique_ptr<juce::XmlElement> diode_1_closed_xml;
+        std::unique_ptr<juce::Drawable>   diode_1_closed;
+        std::unique_ptr<juce::XmlElement> diode_2_closed_xml;
+        std::unique_ptr<juce::Drawable>   diode_2_closed;
+
+        std::unique_ptr<juce::XmlElement> opAmp_xml;
+        std::unique_ptr<juce::Drawable>   opAmp;
+    } svg;
 
     xynth::GuiData& guiData;
 };

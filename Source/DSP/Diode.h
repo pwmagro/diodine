@@ -43,5 +43,7 @@ namespace WDYM {
         float samplesPerMs;
 
         float lastSample;
+
+        juce::IIRFilter dcOffset;
     };
 }

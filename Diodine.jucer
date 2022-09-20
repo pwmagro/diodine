@@ -5,8 +5,17 @@
               companyName="WDYM" companyCopyright="Peter Magro" companyWebsite="www.petermagro.com">
   <MAINGROUP id="FnOQe2" name="Diodine">
     <GROUP id="{C5057EFF-3CD6-3CEC-C90A-7DD871A5C714}" name="Assets">
+      <FILE id="cepXvZ" name="diode_1_closed.svg" compile="0" resource="1"
+            file="Assets/diode_1_closed.svg"/>
+      <FILE id="HiOONt" name="diode_1_open.svg" compile="0" resource="1"
+            file="Assets/diode_1_open.svg"/>
+      <FILE id="CheFks" name="diode_2_closed.svg" compile="0" resource="1"
+            file="Assets/diode_2_closed.svg"/>
+      <FILE id="wzNBNc" name="diode_2_open.svg" compile="0" resource="1"
+            file="Assets/diode_2_open.svg"/>
       <FILE id="HHANNL" name="diodine_logo.svg" compile="0" resource="1"
             file="Assets/diodine_logo.svg"/>
+      <FILE id="g7vtGE" name="op_amp.svg" compile="0" resource="1" file="Assets/op_amp.svg"/>
       <FILE id="MTvL4m" name="Raleway-Light.ttf" compile="0" resource="1"
             file="Assets/Raleway-Light.ttf"/>
       <FILE id="M4tj0S" name="Raleway-Medium.ttf" compile="0" resource="1"
