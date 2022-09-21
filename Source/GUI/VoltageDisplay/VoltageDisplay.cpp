@@ -14,6 +14,7 @@
 
 VoltageDisplay::VoltageDisplay(xynth::GuiData& g) : guiData(g)
 {
+    startTimerHz(60);
     auto& treeState = g.audioProcessor.treeState;
 
     // Slider visuals
@@ -137,7 +138,33 @@ void VoltageDisplay::drawWaveshaper(juce::Rectangle<int> rect, juce::Graphics& g
     g.setColour(WDYM::FgColor);
     g.strokePath(waveshape, juce::PathStrokeType(4.f, juce::PathStrokeType::curved));
 
+    // Draw audio shape
+    // TODO: modify ringbuffer class to supply separate pos and neg values
+    waveshape.clear();
+    float xPos =  guiData.audioProcessor.readRingBuffer();
+    float xNeg = -xPos;
+
+    firstPoint = juce::Point<float>(
+        rect.getCentreX() + (xNeg * rect.getWidth() / 2),
+        rect.getCentreY() - (WDYM::Diode::waveshape(xNeg, apvts) * rect.getHeight() / 2.f));
+    waveshape.startNewSubPath(firstPoint);
+
+    for (float i = xNeg; i < xPos; i += 0.02) {
+        auto point = juce::Point<float>(
+            rect.getCentreX() + (i * rect.getWidth() / 2),
+            rect.getCentreY() - (WDYM::Diode::waveshape(i, apvts) * rect.getHeight() / 2.f));
+
+        waveshape.lineTo(point);
+    }
+
+    g.setColour(WDYM::TextColor.withMultipliedSaturation(2));
+    g.strokePath(waveshape, juce::PathStrokeType(4.f, juce::PathStrokeType::curved));
+
     // Draw a border
     g.setColour(WDYM::TextColor.darker(2));
     g.drawRoundedRectangle(rect.toFloat().expanded(2.f), 10.f, 4.f);
+}
+
+void VoltageDisplay::timerCallback() {
+    repaint();
 }

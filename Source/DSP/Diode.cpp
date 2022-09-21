@@ -25,12 +25,22 @@ namespace WDYM {
     void Diode::init(double sampleRate, int samplesPerBlock) {
         samplesPerMs = sampleRate / 1000.f;
 
-        const juce::IIRCoefficients coef;
-        dcOffset.setCoefficients(coef.makeHighPass(sampleRate, 200));
+        // TODO switch process() block to use contexts + implement filter
+        dcOffset.setCutoffFrequency(15.f);
+        dcOffset.setType(juce::dsp::LinkwitzRileyFilterType::highpass);
+
+        juce::dsp::ProcessSpec spec;
+        spec.sampleRate = sampleRate;
+        spec.maximumBlockSize = samplesPerBlock;
+        spec.numChannels = 2;
+        ringBuffer.prepare(spec);
     }
 
     void Diode::process(juce::AudioBuffer<float>& buffer, juce::AudioProcessorValueTreeState& apvts) {
+        ringBuffer.writeSamples(juce::dsp::AudioBlock<float>(buffer));
         auto ch = buffer.getNumChannels();
+        jassert(ch == 2); // ill be damned if i deal with more than 2 channels
+
         auto sm = buffer.getNumSamples();
 
         diodeProperties.diode1 = apvts.getRawParameterValue(DIODE_1_ID)->load();
@@ -50,7 +60,6 @@ namespace WDYM {
                 for (int s = 0; s < sm; s++) {
                     channelWr[s] = ((1 - diodeProperties.mix) * channelRd[s]) + (diodeProperties.mix * wsSym(channelRd[s], diodeProperties));
                 }
-                //dcOffset.processSamples(channelWr, sm);
             }
         }
         else if (diodeProperties.diode1) {
@@ -61,7 +70,6 @@ namespace WDYM {
                 for (int s = 0; s < sm; s++) {
                     channelWr[s] = ((1 - diodeProperties.mix) * channelRd[s]) + (diodeProperties.mix * wsAsym(channelRd[s], diodeProperties));
                 }
-                //dcOffset.processSamples(channelWr, sm);
             }
         }
         else if (diodeProperties.diode2) {
@@ -72,7 +80,6 @@ namespace WDYM {
                 for (int s = 0; s < sm; s++) {
                     channelWr[s] = (((1 - diodeProperties.mix) * channelRd[s]) + (diodeProperties.mix * wsAsym(channelRd[s], diodeProperties)));
                 }
-                //dcOffset.processSamples(channelWr, sm);
             }
         }
         else {
@@ -83,7 +90,6 @@ namespace WDYM {
                 for (int s = 0; s < sm; s++) {
                     channelWr[s] = -(((1 - diodeProperties.mix) * channelRd[s]));
                 }
-                //dcOffset.processSamples(channelWr, sm);
             }
         }
 
@@ -172,5 +178,9 @@ namespace WDYM {
             return -wsAsym(x, diodeProperties);
         }
         else return 0;
+    }
+
+    float Diode::readRingBuffer() {
+        return ringBuffer.readSamples();
     }
 }

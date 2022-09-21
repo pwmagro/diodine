@@ -14,7 +14,7 @@
 
 #include "VoltageGraph.h"
 
-class VoltageDisplay : public juce::Component {
+class VoltageDisplay : public juce::Component, juce::Timer {
 public:
     VoltageDisplay(xynth::GuiData& g);
     void paint(juce::Graphics& g);
@@ -31,6 +31,8 @@ private:
 
     xynth::GuiData& guiData;
 
-    void drawWaveshaperLine(juce::Rectangle<int> rect, juce::Graphics& g);
+    void drawWaveshaper(juce::Rectangle<int> rect, juce::Graphics& g);
     juce::Path waveshape;
+    
+    void timerCallback() override;
 };

@@ -57,6 +57,8 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    float readRingBuffer() { return diodine.readRingBuffer(); };
+
     juce::AudioProcessorValueTreeState treeState;
 
 private:

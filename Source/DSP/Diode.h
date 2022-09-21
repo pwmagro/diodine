@@ -11,6 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "../Common/Constants.h"
+#include "../Common/RingBuffer.h"
 
 namespace WDYM {
     class Diode {
@@ -20,6 +21,7 @@ namespace WDYM {
         void init(double sampleRate, int samplesPerBlock);
         void process(juce::AudioBuffer<float>& buffer, juce::AudioProcessorValueTreeState &apvts);
         static float waveshape(float x, juce::AudioProcessorValueTreeState& apvts);
+        float readRingBuffer();
 
     private:
         typedef struct {
@@ -44,6 +46,7 @@ namespace WDYM {
 
         float lastSample;
 
-        juce::IIRFilter dcOffset;
+        juce::dsp::LinkwitzRileyFilter<float> dcOffset;
+        xynth::RingBuffer ringBuffer;
     };
 }

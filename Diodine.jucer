@@ -27,6 +27,8 @@
       <GROUP id="{CE2EA949-80A8-4BE1-5C1E-605A036B1C7B}" name="Common">
         <FILE id="RinBsu" name="Constants.cpp" compile="1" resource="0" file="Source/Common/Constants.cpp"/>
         <FILE id="ROFvvY" name="Constants.h" compile="0" resource="0" file="Source/Common/Constants.h"/>
+        <FILE id="UQdQAc" name="RingBuffer.cpp" compile="1" resource="0" file="Source/Common/RingBuffer.cpp"/>
+        <FILE id="eHocMi" name="RingBuffer.h" compile="0" resource="0" file="Source/Common/RingBuffer.h"/>
       </GROUP>
       <GROUP id="{3201A1A2-EC8D-E8E9-1D07-40349F8EF37E}" name="GUI">
         <GROUP id="{321EBD7A-AB34-2B80-B28C-D2A925B5D016}" name="OscilloscopeDisplay">
@@ -121,6 +123,7 @@
         <MODULEPATH id="juce_graphics" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../../../../JUCE/modules"/>
       </MODULEPATHS>
     </VS2022>
   </EXPORTFORMATS>
@@ -134,6 +137,7 @@
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
