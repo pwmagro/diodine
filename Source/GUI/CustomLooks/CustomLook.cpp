@@ -32,10 +32,11 @@ namespace juce
         g.setColour(getNeutral1());
         g.fillRoundedRectangle(area, 8.f);
 
-        g.setColour(getAccent2().withAlpha(0.5f));
-        g.drawLine(area.getCentreX(), area.getY(), area.getCentreX(), area.getBottom(), 2.f);
-        g.drawLine(area.getX(), area.getCentreY(), area.getRight(), area.getCentreY(), 2.f);
+        g.setColour(getAccent2().withAlpha(0.1f));
+        g.drawLine(area.getCentreX(), area.getY(), area.getCentreX(), area.getBottom(), 1.f);
+        g.drawLine(area.getX(), area.getCentreY(), area.getRight(), area.getCentreY(), 1.f);
 
+        g.setColour(getAccent2().withAlpha(0.3f));
         for (float i = 0; i < amplitude; i += lineFreq) {
             auto x = area.getWidth() * i / (amplitude * 2);
             g.drawLine(area.getCentreX() + x, area.getY(), area.getCentreX() + x, area.getBottom(), 1.f);
@@ -119,7 +120,7 @@ namespace juce
         // Slider track
         Point<float> start = isHorizontal ? Point<float>(x, y + (height / 2.f)) : Point<float>(x + (width / 2.f), y);
         Point<float> end = isHorizontal ? Point<float>(x + width, y + (height / 2.f)) : Point<float>(x + (width / 2.f), y + height);
-        g.setColour(getAccent2());
+        g.setColour(getAccent2().darker(0.5f));
         g.setOpacity(isHovered ? 1.f : 0.75f);
         g.drawLine(Line<float>(start, end), 4.f);
 

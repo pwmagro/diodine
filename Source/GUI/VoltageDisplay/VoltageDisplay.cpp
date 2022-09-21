@@ -126,7 +126,7 @@ void VoltageDisplay::drawWaveshaper(juce::Rectangle<int> rect, juce::Graphics& g
         rect.getX(),
         rect.getCentreY() - (WDYM::Diode::waveshape(-1, apvts) * rect.getHeight() / 2.f));
     waveshape.startNewSubPath(firstPoint);
-    for (float i = -0.98; i <= 1.001f; i += 0.02) {
+    for (float i = -0.99; i <= 1.01f; i += 0.02) {
         auto point = juce::Point<float>(
             rect.getCentreX() + (i * rect.getWidth() / 2),
             rect.getCentreY() - (WDYM::Diode::waveshape(i, apvts) * rect.getHeight() / 2.f) );
@@ -135,8 +135,8 @@ void VoltageDisplay::drawWaveshaper(juce::Rectangle<int> rect, juce::Graphics& g
     }
 
     // Draw the line
-    g.setColour(WDYM::FgColor);
-    g.strokePath(waveshape, juce::PathStrokeType(4.f, juce::PathStrokeType::curved));
+    g.setColour(WDYM::FgColor.darker(0.3f));
+    g.strokePath(waveshape, juce::PathStrokeType(2.f, juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
 
     // Draw audio shape
     // TODO: modify ringbuffer class to supply separate pos and neg values
@@ -157,11 +157,11 @@ void VoltageDisplay::drawWaveshaper(juce::Rectangle<int> rect, juce::Graphics& g
         waveshape.lineTo(point);
     }
 
-    g.setColour(WDYM::TextColor.withMultipliedSaturation(2));
-    g.strokePath(waveshape, juce::PathStrokeType(4.f, juce::PathStrokeType::curved));
+    g.setColour(WDYM::TextColor.darker(0.2f).withSaturation(1.f));
+    g.strokePath(waveshape, juce::PathStrokeType(4.f, juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
 
     // Draw a border
-    g.setColour(WDYM::TextColor.darker(2));
+    g.setColour(WDYM::FgColor.darker(2));
     g.drawRoundedRectangle(rect.toFloat().expanded(2.f), 10.f, 4.f);
 }
 
