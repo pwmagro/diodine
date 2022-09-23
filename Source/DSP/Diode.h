@@ -21,7 +21,7 @@ namespace WDYM {
         void init(double sampleRate, int samplesPerBlock);
         void process(juce::AudioBuffer<float>& buffer, juce::AudioProcessorValueTreeState &apvts);
         static float waveshape(float x, juce::AudioProcessorValueTreeState& apvts);
-        float readRingBuffer();
+        xynth::RingBuffer::maxmin_t readRingBuffer();
 
     private:
         typedef struct {

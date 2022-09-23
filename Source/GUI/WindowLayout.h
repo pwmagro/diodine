@@ -18,6 +18,7 @@
 #include "VoltageDisplay/VoltageDisplay.h"
 #include "TimingDisplay/TimingDisplay.h"
 #include "Misc/Logo.h"
+#include "CustomLooks/Styles.h"
 
 class WindowLayout : public juce::Component
 {
@@ -48,6 +49,8 @@ private:
 
     // Miscellaneous items
     Logo logo;
+
+    WDYM::Style style;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WindowLayout)
 };

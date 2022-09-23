@@ -141,8 +141,13 @@ void VoltageDisplay::drawWaveshaper(juce::Rectangle<int> rect, juce::Graphics& g
     // Draw audio shape
     // TODO: modify ringbuffer class to supply separate pos and neg values
     waveshape.clear();
-    float xPos =  guiData.audioProcessor.readRingBuffer();
-    float xNeg = -xPos;
+    auto xmaxmin = guiData.audioProcessor.readRingBuffer();
+    static float lastXPos = xmaxmin.max;
+    static float lastXNeg = xmaxmin.min;
+    float xPos = std::max(0.2f * xmaxmin.max + 0.8f * lastXPos, xmaxmin.max);
+    float xNeg = std::min(0.2f * xmaxmin.min + 0.8f * lastXNeg, xmaxmin.min);
+    lastXPos = xPos;
+    lastXNeg = xNeg;
 
     firstPoint = juce::Point<float>(
         rect.getCentreX() + (xNeg * rect.getWidth() / 2),
@@ -158,7 +163,7 @@ void VoltageDisplay::drawWaveshaper(juce::Rectangle<int> rect, juce::Graphics& g
     }
 
     g.setColour(WDYM::TextColor.darker(0.2f).withSaturation(1.f));
-    g.strokePath(waveshape, juce::PathStrokeType(4.f, juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
+    g.strokePath(waveshape, juce::PathStrokeType(std::min(4.f, 24.f * xPos), juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
 
     // Draw a border
     g.setColour(WDYM::FgColor.darker(2));

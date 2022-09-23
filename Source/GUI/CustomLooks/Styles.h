@@ -10,11 +10,26 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include "../Utils/GuiData.h"
 
 namespace WDYM {
-    static const float accentHue = 0;
-    static const juce::Colour FgColor = juce::Colour::fromHSV(accentHue, 0.1f, 0.5f, 1.f);
-    static const juce::Colour BgColor = juce::Colour::fromHSV(accentHue, 0.1f, 0.15f, 1.f);
-    static const juce::Colour TextColor = juce::Colour::fromHSV(accentHue, 0.8f, 0.9f, 1.f);
-    static const juce::Colour OutlineColor = juce::Colour::fromHSV(accentHue, 0.4f, 0.1f, 1.f);
+    class ColorGrabber : public juce::Component {
+    public:
+        ColorGrabber(xynth::GuiData& g) : guiData(g) {
+            accentHue.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+            accentHue.onValueChange = [this]() { getParentComponent()->repaint(); };
+            addAndMakeVisible(accentHue);
+        }
+        ~ColorGrabber() override;
+        void paint(juce::Graphics& g) { accentHue.setBounds(getLocalBounds()); }
+        juce::Colour FgColor() { juce::Colour::fromHSV(accentHue.getValue(), 0.1f, 0.5f, 1.f); }
+        juce::Colour BgColor() { juce::Colour::fromHSV(accentHue.getValue(), 0.1f, 0.15f, 1.f); }
+        juce::Colour TextColor() { juce::Colour::fromHSV(accentHue.getValue(), 0.8f, 0.9f, 1.f); }
+        juce::Colour OutlineColor() { juce::Colour::fromHSV(accentHue.getValue(), 0.4f, 0.1f, 1.f); }
+
+
+    private:
+        xynth::GuiData& guiData;
+        juce::Slider accentHue;
+    };
 }

@@ -63,32 +63,40 @@ void RingBuffer::writeSamples(juce::dsp::AudioBlock<float>& newBuffer)
     writeAtomic.store(newLimit % buffer.size(), std::memory_order_release);
     return;
 }
-float RingBuffer::readSamples()
+RingBuffer::maxmin_t RingBuffer::readSamples()
 {
     size_t write = writeAtomic.load(std::memory_order_acquire);
 
-    if (read == write) return 0.f;
+    if (read == write) return { 0.f, 0.f };
 
     // If read is before write
     if (read < write)
     {
         float loudest = 0.f;
+        float quietest = 0.f;
 
-        for (read; read < write; ++read)
-            loudest = std::max(std::abs(buffer[read]), loudest);
+        for (read; read < write; ++read) {
+            loudest = std::max(buffer[read], loudest);
+            quietest = std::min(buffer[read], loudest);
+        }
 
-        return loudest;
+        return { loudest, quietest };
     }
 
     // If read is NOT before write
     float loudest = 0.f;
+    float quietest = 0.f;
 
-    for (read; read < buffer.size(); ++read)
-        loudest = std::max(std::abs(buffer[read]), loudest);
+    for (read; read < buffer.size(); ++read) {
+        loudest = std::max(buffer[read], loudest);
+        quietest = std::min(buffer[read], loudest);
+    }
 
-    for (read = 0; read < write; ++read)
-        loudest = std::max(std::abs(buffer[read]), loudest);
+    for (read = 0; read < write; ++read) {
+        loudest = std::max(buffer[read], loudest);
+        quietest = std::min(buffer[read], loudest);
+    }
 
-    return loudest;
+    return { loudest, quietest };
 }
 } // namespace xynth

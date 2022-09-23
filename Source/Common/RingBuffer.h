@@ -21,7 +21,8 @@ public:
 
     void prepare(juce::dsp::ProcessSpec& spec);
     void writeSamples(juce::dsp::AudioBlock<float>& buffer);
-    float readSamples();
+    typedef struct { float max; float min; } maxmin_t;
+    maxmin_t readSamples();
 
 private:
     std::vector<float> buffer;

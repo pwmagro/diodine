@@ -180,7 +180,7 @@ namespace WDYM {
         else return 0;
     }
 
-    float Diode::readRingBuffer() {
+    xynth::RingBuffer::maxmin_t Diode::readRingBuffer() {
         return ringBuffer.readSamples();
     }
 }

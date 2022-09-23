@@ -27,7 +27,11 @@ namespace juce
 
     void CustomLook::drawGraphBackground(Graphics& g, Rectangle<float> area, float amplitude = 1)
     {
-        float lineFreq = std::max(((int)(amplitude + 5) / 5), 1);
+        const float division = 7;
+        const int   divisint = (int)division;
+        float lineFreq = std::pow(2, std::max(((int)(amplitude) / divisint), 1));
+        float lineFreqSmall = std::pow(2, std::max(((int)(amplitude + division) / divisint), 1));
+        float smallOpacity = ((amplitude / division) - (int)(amplitude / division));
 
         g.setColour(getNeutral1());
         g.fillRoundedRectangle(area, 8.f);
@@ -36,7 +40,7 @@ namespace juce
         g.drawLine(area.getCentreX(), area.getY(), area.getCentreX(), area.getBottom(), 1.f);
         g.drawLine(area.getX(), area.getCentreY(), area.getRight(), area.getCentreY(), 1.f);
 
-        g.setColour(getAccent2().withAlpha(0.3f));
+        g.setColour(getAccent2().withAlpha(0.4f * (1 - smallOpacity)));
         for (float i = 0; i < amplitude; i += lineFreq) {
             auto x = area.getWidth() * i / (amplitude * 2);
             g.drawLine(area.getCentreX() + x, area.getY(), area.getCentreX() + x, area.getBottom(), 1.f);
@@ -44,6 +48,19 @@ namespace juce
         }
 
         for (float j = 0; j <= amplitude; j += lineFreq) {
+            auto y = area.getHeight() * j / (amplitude * 2);
+            g.drawLine(area.getX(), area.getCentreY() + y, area.getRight(), area.getCentreY() + y, 1.f);
+            g.drawLine(area.getX(), area.getCentreY() - y, area.getRight(), area.getCentreY() - y, 1.f);
+        }
+
+        g.setOpacity(0.4f * smallOpacity);
+        for (float i = 0; i < amplitude; i += lineFreqSmall) {
+            auto x = area.getWidth() * i / (amplitude * 2);
+            g.drawLine(area.getCentreX() + x, area.getY(), area.getCentreX() + x, area.getBottom(), 1.f);
+            g.drawLine(area.getCentreX() - x, area.getY(), area.getCentreX() - x, area.getBottom(), 1.f);
+        }
+
+        for (float j = 0; j <= amplitude; j += lineFreqSmall) {
             auto y = area.getHeight() * j / (amplitude * 2);
             g.drawLine(area.getX(), area.getCentreY() + y, area.getRight(), area.getCentreY() + y, 1.f);
             g.drawLine(area.getX(), area.getCentreY() - y, area.getRight(), area.getCentreY() - y, 1.f);

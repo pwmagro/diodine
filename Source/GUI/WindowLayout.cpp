@@ -13,7 +13,7 @@
 
 WindowLayout::WindowLayout(xynth::GuiData& g) : guiData(g), aboutOverlay(g), circuitDisplay(g),
                                                 voltageDisplay(g), timingDisplay(g), logo(g),
-                                                oscilloscopeDisplay(g)
+                                                oscilloscopeDisplay(g), style(g)
 {
     auto& treeState = g.audioProcessor.treeState;
 
@@ -23,6 +23,7 @@ WindowLayout::WindowLayout(xynth::GuiData& g) : guiData(g), aboutOverlay(g), cir
     addAndMakeVisible(voltageDisplay);
     addAndMakeVisible(timingDisplay);
     addAndMakeVisible(logo);
+    addAndMakeVisible(style);
     addChildComponent(aboutOverlay);
 
     guiData.showAbout = [this]() { aboutOverlay.setVisible(true); };
