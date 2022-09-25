@@ -13,7 +13,7 @@
 
 WindowLayout::WindowLayout(xynth::GuiData& g) : guiData(g), aboutOverlay(g), circuitDisplay(g),
                                                 voltageDisplay(g), timingDisplay(g), logo(g),
-                                                oscilloscopeDisplay(g), style(g)
+                                                oscilloscopeDisplay(g), hue(g)
 {
     auto& treeState = g.audioProcessor.treeState;
 
@@ -23,7 +23,7 @@ WindowLayout::WindowLayout(xynth::GuiData& g) : guiData(g), aboutOverlay(g), cir
     addAndMakeVisible(voltageDisplay);
     addAndMakeVisible(timingDisplay);
     addAndMakeVisible(logo);
-    addAndMakeVisible(style);
+    addAndMakeVisible(hue);
     addChildComponent(aboutOverlay);
 
     guiData.showAbout = [this]() { aboutOverlay.setVisible(true); };
@@ -39,13 +39,14 @@ void WindowLayout::paint (juce::Graphics& g)
     const int spacing = 2;
 
 
-    g.setColour(WDYM::OutlineColor);
+    g.setColour(guiData.getLnf().getOutlineColor());
     g.fillRect(rect);
 
     auto topRect = rect.removeFromTop(rect.getHeight() / 3.f);
     auto topLeftRect = topRect.removeFromLeft(300.f);
     logo.setBounds(topLeftRect.removeFromTop(100.f).reduced(spacing, spacing));
-    oscilloscopeDisplay.setBounds(topLeftRect.reduced(spacing, spacing));
+    oscilloscopeDisplay.setBounds(topLeftRect.removeFromLeft(200.f).reduced(spacing, spacing));
+    hue.setBounds(topLeftRect.reduced(spacing, spacing));
     circuitDisplay.setBounds(topRect.reduced(spacing, spacing));
     voltageDisplay.setBounds(rect.removeFromLeft(rect.getWidth() / 2.f).reduced(spacing, spacing));
     timingDisplay.setBounds(rect.reduced(spacing, spacing));
@@ -57,6 +58,4 @@ void WindowLayout::resized()
 
     auto rect = getLocalBounds();
     rect.reduce(spacing, spacing);
-
-    
 }

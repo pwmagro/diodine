@@ -20,6 +20,7 @@
 #define TRR_ID      "RECOVERY_TIME"
 #define MIX_ID      "MIX"
 #define DC_OFF_ID   "DC_OFF"
+#define HUE_ID      "HUE"
 
 // Parameter names
 #define GAIN_NAME       "Gain"
@@ -31,6 +32,7 @@
 #define TRR_NAME        "Reverse Recovery Time"
 #define MIX_NAME        "Mix"
 #define DC_OFF_NAME     "Remove DC Offset"
+#define HUE_NAME        "UI Hue"
 
 // Fonts
 #define FONT_MAIN       BinaryData::RalewayMedium_ttf

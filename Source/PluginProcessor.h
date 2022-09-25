@@ -58,6 +58,7 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     xynth::RingBuffer::maxmin_t readRingBuffer() { return diodine.readRingBuffer(); };
+    float getRrStatus() { return diodine.getRrStatus(); };
 
     juce::AudioProcessorValueTreeState treeState;
 

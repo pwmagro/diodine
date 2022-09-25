@@ -22,6 +22,7 @@ namespace WDYM {
         void process(juce::AudioBuffer<float>& buffer, juce::AudioProcessorValueTreeState &apvts);
         static float waveshape(float x, juce::AudioProcessorValueTreeState& apvts);
         xynth::RingBuffer::maxmin_t readRingBuffer();
+        float getRrStatus() { return rrStatus; };
 
     private:
         typedef struct {
@@ -37,16 +38,20 @@ namespace WDYM {
 
         static float wsAsym(float x, DiodeProperties_t& diodeProperties);
         static float wsSym(float x, DiodeProperties_t& diodeProperties);
+        void setTrr(float trr);
         void recover(juce::AudioBuffer<float>& buffer);
-
 
         DiodeProperties_t diodeProperties;
         
         float samplesPerMs;
-
-        float lastSample;
+        int recoverScanner[2] = { 0, 0 };
+        float lastSamples[2] = { 0, 0 };
 
         juce::dsp::LinkwitzRileyFilter<float> dcOffset;
         xynth::RingBuffer ringBuffer;
+
+        std::vector<float> rr;
+        float lastTrr;
+        float rrStatus;
     };
 }

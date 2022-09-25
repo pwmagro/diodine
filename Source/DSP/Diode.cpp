@@ -15,7 +15,6 @@ namespace WDYM {
     {
         diodeProperties = {};
         samplesPerMs = 0;
-        lastSample = 0;
     }
 
     Diode::~Diode() {
@@ -39,7 +38,9 @@ namespace WDYM {
     void Diode::process(juce::AudioBuffer<float>& buffer, juce::AudioProcessorValueTreeState& apvts) {
         ringBuffer.writeSamples(juce::dsp::AudioBlock<float>(buffer));
         auto ch = buffer.getNumChannels();
-        jassert(ch == 2); // ill be damned if i deal with more than 2 channels
+        if (ch != 2) {
+            throw std::exception("Only two-channel audio is supported.");
+        }
 
         auto sm = buffer.getNumSamples();
 
@@ -51,6 +52,10 @@ namespace WDYM {
         diodeProperties.gain = apvts.getRawParameterValue(GAIN_ID)->load();
         diodeProperties.sat = apvts.getRawParameterValue(SAT_ID)->load() * 10;
         diodeProperties.mix = apvts.getRawParameterValue(MIX_ID)->load();
+
+        if (diodeProperties.trr != lastTrr) {
+            setTrr(diodeProperties.trr);
+        }
 
         if (diodeProperties.diode1 && diodeProperties.diode2) {
             for (int c = 0; c < ch; c++) {
@@ -92,6 +97,10 @@ namespace WDYM {
                 }
             }
         }
+        lastSamples[0] = buffer.getReadPointer(0)[buffer.getNumSamples() - 1];
+        lastSamples[1] = buffer.getReadPointer(1)[buffer.getNumSamples() - 1];
+
+        recover(buffer);
 
     }
 
@@ -154,7 +163,41 @@ namespace WDYM {
     }
 
     void Diode::recover(juce::AudioBuffer<float>& buffer) {
+        if (diodeProperties.trr < 0.01) {
+            rrStatus = 0;
+            return;
+        }
+        for (int n = 0; n < 2; n++) {
+            auto chr = buffer.getReadPointer(n);
+            auto ch = buffer.getWritePointer(n);
 
+            if (lastSamples[n] * diodeProperties.gain > (diodeProperties.vf + 0.05) && chr[0] * diodeProperties.gain < diodeProperties.vf) {
+                recoverScanner[n] = 0;
+                rrStatus = rr[0];
+            }
+            for (int s = 1; s < buffer.getNumSamples(); s++) {
+                if (chr[s - 1] * diodeProperties.gain > (diodeProperties.vf + 0.05) && chr[s] * diodeProperties.gain < diodeProperties.vf) {
+                    recoverScanner[n] = 0;
+                    rrStatus = rr[0];
+                }
+                else if (recoverScanner[n] < juce::roundFloatToInt(diodeProperties.trr * samplesPerMs - 1)) {
+                    ch[s] = std::min(1.f, ch[s] + rr[recoverScanner[n]] * diodeProperties.vf / diodeProperties.gain);
+                    recoverScanner[n]++;
+                }
+            }
+            rrStatus *= 0.97;
+        }
+    }
+
+    void Diode::setTrr(float trr) {
+        float charge = 1.f;        // not an actual charge value but yknow
+        lastTrr = trr;
+
+        int trrInSamples = juce::roundFloatToInt(trr * samplesPerMs) - 1;
+        rr.clear();
+        for (float i = 0; i <= trrInSamples; i++) {
+            rr.push_back(charge * (tanh(1) - tanh(i / trrInSamples)));
+        }
     }
 
     float Diode::waveshape(float x, juce::AudioProcessorValueTreeState& apvts) {

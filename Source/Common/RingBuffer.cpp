@@ -77,7 +77,7 @@ RingBuffer::maxmin_t RingBuffer::readSamples()
 
         for (read; read < write; ++read) {
             loudest = std::max(buffer[read], loudest);
-            quietest = std::min(buffer[read], loudest);
+            quietest = std::min(buffer[read], quietest);
         }
 
         return { loudest, quietest };

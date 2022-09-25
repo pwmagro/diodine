@@ -14,15 +14,17 @@
 
 #include "TimingGraph.h"
 
-class TimingDisplay : public juce::Component {
+class TimingDisplay : public juce::Component, juce::Timer {
 public:
     TimingDisplay(xynth::GuiData& g);
     void paint(juce::Graphics& g);
 private:
+    void timerCallback() override { repaint(); }
+
     juce::Slider trrSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> trrAttach;
     
-    //TimingGraph timingGraph;
+    const int len = 100;
 
     xynth::GuiData& guiData;
 };

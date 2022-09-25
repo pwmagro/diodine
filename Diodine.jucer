@@ -40,9 +40,12 @@
         <GROUP id="{4D174CC2-05B4-0AFD-A67E-685B0A0964F3}" name="CustomLooks">
           <FILE id="KWJeDa" name="CustomLook.cpp" compile="1" resource="0" file="Source/GUI/CustomLooks/CustomLook.cpp"/>
           <FILE id="fp7OpF" name="CustomLook.h" compile="0" resource="0" file="Source/GUI/CustomLooks/CustomLook.h"/>
+          <FILE id="mS3V4f" name="Styles.cpp" compile="1" resource="0" file="Source/GUI/CustomLooks/Styles.cpp"/>
           <FILE id="Urw06c" name="Styles.h" compile="0" resource="0" file="Source/GUI/CustomLooks/Styles.h"/>
         </GROUP>
         <GROUP id="{E712B4B0-8D74-4C7B-9D0D-ED5F56F404D1}" name="Misc">
+          <FILE id="EMf7Qq" name="HueControl.cpp" compile="1" resource="0" file="Source/GUI/Misc/HueControl.cpp"/>
+          <FILE id="V8hV7r" name="HueControl.h" compile="0" resource="0" file="Source/GUI/Misc/HueControl.h"/>
           <FILE id="H6qgXU" name="Logo.cpp" compile="1" resource="0" file="Source/GUI/Misc/Logo.cpp"/>
           <FILE id="sECsRH" name="Logo.h" compile="0" resource="0" file="Source/GUI/Misc/Logo.h"/>
         </GROUP>

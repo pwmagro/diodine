@@ -71,7 +71,7 @@ void VoltageDisplay::paint(juce::Graphics& g) {
 
     // Draw slider labels
     g.setFont(lnf.getCustomFontRegular().withHeight(18));
-    g.setColour(lnf.getAccent2());
+    g.setColour(lnf.getFgColor());
     g.drawText(((juce::String)VF_NAME).toLowerCase(), vfLabelRect, juce::Justification::left);
     g.drawText(((juce::String)VB_NAME).toLowerCase(), vbLabelRect, juce::Justification::left);
 
@@ -84,7 +84,7 @@ void VoltageDisplay::paint(juce::Graphics& g) {
 
     // Slider values
     g.setFont(lnf.getCustomFontRegular().withHeight(25));
-    g.setColour(lnf.getAccent1());
+    g.setColour(lnf.getTextColor());
 
     // Find the location of the slider knob
     auto vfSliderPos = vfSlider.getPositionOfValue(vfSlider.getValue());
@@ -135,7 +135,7 @@ void VoltageDisplay::drawWaveshaper(juce::Rectangle<int> rect, juce::Graphics& g
     }
 
     // Draw the line
-    g.setColour(WDYM::FgColor.darker(0.3f));
+    g.setColour(guiData.getLnf().getFgColor().darker(0.35f));
     g.strokePath(waveshape, juce::PathStrokeType(2.f, juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
 
     // Draw audio shape
@@ -144,8 +144,13 @@ void VoltageDisplay::drawWaveshaper(juce::Rectangle<int> rect, juce::Graphics& g
     auto xmaxmin = guiData.audioProcessor.readRingBuffer();
     static float lastXPos = xmaxmin.max;
     static float lastXNeg = xmaxmin.min;
-    float xPos = std::max(0.2f * xmaxmin.max + 0.8f * lastXPos, xmaxmin.max);
-    float xNeg = std::min(0.2f * xmaxmin.min + 0.8f * lastXNeg, xmaxmin.min);
+    auto xPos = xmaxmin.max;
+    auto xNeg = xmaxmin.min;
+    if (xPos < lastXPos)
+        xPos = lastXPos * 0.92;
+    if (xNeg > lastXNeg)
+        xNeg = lastXNeg * 0.92;
+    
     lastXPos = xPos;
     lastXNeg = xNeg;
 
@@ -162,12 +167,12 @@ void VoltageDisplay::drawWaveshaper(juce::Rectangle<int> rect, juce::Graphics& g
         waveshape.lineTo(point);
     }
 
-    g.setColour(WDYM::TextColor.darker(0.2f).withSaturation(1.f));
-    g.strokePath(waveshape, juce::PathStrokeType(std::min(4.f, 24.f * xPos), juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
+    g.setColour(guiData.getLnf().getTextColor().withSaturation(1.f));
+    g.strokePath(waveshape, juce::PathStrokeType(std::min(5.f, 24.f * xPos), juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
 
     // Draw a border
-    g.setColour(WDYM::FgColor.darker(2));
-    g.drawRoundedRectangle(rect.toFloat().expanded(2.f), 10.f, 4.f);
+    g.setColour(guiData.getLnf().getFgColor().darker(2));
+    g.drawRoundedRectangle(rect.toFloat().expanded(2.f), 5.f, 4.f);
 }
 
 void VoltageDisplay::timerCallback() {

@@ -21,7 +21,7 @@ namespace juce
 
     void CustomLook::drawSectionBackground(Graphics& g, Rectangle<int> area)
     {
-        g.setColour(getBase1());
+        g.setColour(getBgColor());
         g.fillRoundedRectangle(area.toFloat(), 5.f);
     }
 
@@ -33,14 +33,14 @@ namespace juce
         float lineFreqSmall = std::pow(2, std::max(((int)(amplitude + division) / divisint), 1));
         float smallOpacity = ((amplitude / division) - (int)(amplitude / division));
 
-        g.setColour(getNeutral1());
-        g.fillRoundedRectangle(area, 8.f);
+        g.setColour(getOutlineColor());
+        g.fillRoundedRectangle(area, 3.f);
 
-        g.setColour(getAccent2().withAlpha(0.1f));
+        g.setColour(getFgColor().withAlpha(0.1f));
         g.drawLine(area.getCentreX(), area.getY(), area.getCentreX(), area.getBottom(), 1.f);
         g.drawLine(area.getX(), area.getCentreY(), area.getRight(), area.getCentreY(), 1.f);
 
-        g.setColour(getAccent2().withAlpha(0.4f * (1 - smallOpacity)));
+        g.setColour(getFgColor().withAlpha(0.4f * (1 - smallOpacity)));
         for (float i = 0; i < amplitude; i += lineFreq) {
             auto x = area.getWidth() * i / (amplitude * 2);
             g.drawLine(area.getCentreX() + x, area.getY(), area.getCentreX() + x, area.getBottom(), 1.f);
@@ -69,7 +69,7 @@ namespace juce
 
     void CustomLook::drawGraphForeground(Graphics& g, Rectangle<float> area)
     {
-        g.setColour(getAccent2());
+        g.setColour(getFgColor());
         g.drawRoundedRectangle(area.reduced(0.75f), 8.f, 2.f);
     }
 
@@ -95,7 +95,7 @@ namespace juce
         // Draw background circle
         Rectangle<float> rect(x, y, width, height);
         rect = rect.withSizeKeepingCentre(radius * 2.f, radius * 2.f);
-        g.setColour(getBase1());
+        g.setColour(getBgColor());
         g.fillEllipse(rect.reduced(0.1f));
 
         // current angle of the slider
@@ -103,8 +103,8 @@ namespace juce
 
         radius = juce::jmin(width / 2, height / 2) - thickness * 0.5f;
 
-        const auto bgColour = getNeutral1();
-        const auto mainColour = isLarge ? getAccent1() : getAccent2();
+        const auto bgColour = getOutlineColor();
+        const auto mainColour = isLarge ? getTextColor() : getFgColor();
 
         // Draw path of the slider backgound (in darker background colour)
         juce::Path backgroundArc;
@@ -112,13 +112,26 @@ namespace juce
         g.setColour(bgColour);
         g.strokePath(backgroundArc, juce::PathStrokeType(thickness, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
 
-        // Draw path of slider foreground (in white)
-        juce::Path foregroundArc;
-        foregroundArc.addCentredArc(centreX, centreY, radius, radius, 0.0f, rotaryStartAngle, angle, true);
-        g.setColour(mainColour);
-        g.strokePath(foregroundArc, juce::PathStrokeType(thickness, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
 
-        if (isLarge)
+        if (slider.getRotaryParameters().stopAtEnd) {    
+            // Draw path of slider foreground (in white)
+            juce::Path foregroundArc;
+            foregroundArc.addCentredArc(centreX, centreY, radius, radius, 0.0f, rotaryStartAngle, angle, true);
+            g.setColour(mainColour);
+            g.strokePath(foregroundArc, juce::PathStrokeType(thickness, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+        }
+
+        else {
+            juce::Point<float> start(centreX + 0.6f * radius * cos(angle), centreY + 0.6f * radius * sin(angle));
+            juce::Point<float> end(centreX + radius * cos(angle), centreY + radius * sin(angle));
+            juce::Path indicator;
+            indicator.startNewSubPath(start);
+            indicator.lineTo(end);
+            g.setColour(mainColour);
+            g.strokePath(indicator, juce::PathStrokeType(thickness, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+        }
+
+        if (isLarge && slider.getRotaryParameters().stopAtEnd)
         {
             g.setFont(getCustomFontMedium().withHeight(30));
             g.drawText(String(std::round(slider.getValue())), rect, Justification::centred);
@@ -137,11 +150,11 @@ namespace juce
         // Slider track
         Point<float> start = isHorizontal ? Point<float>(x, y + (height / 2.f)) : Point<float>(x + (width / 2.f), y);
         Point<float> end = isHorizontal ? Point<float>(x + width, y + (height / 2.f)) : Point<float>(x + (width / 2.f), y + height);
-        g.setColour(getAccent2().darker(0.5f));
+        g.setColour(getFgColor().darker(0.5f));
         g.setOpacity(isHovered ? 1.f : 0.75f);
         g.drawLine(Line<float>(start, end), 4.f);
 
-        g.setColour(getAccent1());
+        g.setColour(getTextColor());
 
         float newWidth = 6.f;
         if (isHovered)
@@ -163,14 +176,14 @@ namespace juce
         auto rect = button.getLocalBounds().toFloat();
 
         // Draw background
-        auto bgColour = button.getToggleState() ? getAccent2() : getNeutral1();
+        auto bgColour = button.getToggleState() ? getFgColor() : getOutlineColor();
         bgColour = bgColour.brighter(shouldDrawButtonAsHighlighted ? 0.1f : 0.f);
         bgColour = bgColour.darker(shouldDrawButtonAsDown ? 0.2f : 0.f);
         g.setColour(bgColour);
         g.fillRoundedRectangle(rect, 6.f);
 
         // Draw power symbol
-        g.setColour(getBase1());
+        g.setColour(getBgColor());
         const float centreX = rect.getCentreX();
         const float centreY = rect.getCentreY();
 

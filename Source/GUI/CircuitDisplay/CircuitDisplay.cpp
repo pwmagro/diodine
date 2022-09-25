@@ -25,23 +25,23 @@ CircuitDisplay::CircuitDisplay(xynth::GuiData& g) : guiData(g),
     svg.diode_1_open_xml = juce::parseXML(BinaryData::diode_1_open_svg);
     svg.diode_1_open = juce::Drawable::createFromSVG(*svg.diode_1_open_xml);
 
-    svg.diode_1_open->replaceColour(juce::Colours::black, WDYM::FgColor);
+    svg.diode_1_open->replaceColour(juce::Colours::black, guiData.getLnf().getFgColor());
 
     svg.diode_2_open_xml = juce::parseXML(BinaryData::diode_2_open_svg);
     svg.diode_2_open = juce::Drawable::createFromSVG(*svg.diode_2_open_xml);
-    svg.diode_2_open->replaceColour(juce::Colours::black, WDYM::FgColor);
+    svg.diode_2_open->replaceColour(juce::Colours::black, guiData.getLnf().getFgColor());
 
     svg.diode_1_closed_xml = juce::parseXML(BinaryData::diode_1_closed_svg);
     svg.diode_1_closed = juce::Drawable::createFromSVG(*svg.diode_1_closed_xml);
-    svg.diode_1_closed->replaceColour(juce::Colours::black, WDYM::FgColor);
+    svg.diode_1_closed->replaceColour(juce::Colours::black, guiData.getLnf().getFgColor());
 
     svg.diode_2_closed_xml = juce::parseXML(BinaryData::diode_2_closed_svg);
     svg.diode_2_closed = juce::Drawable::createFromSVG(*svg.diode_2_closed_xml);
-    svg.diode_2_closed->replaceColour(juce::Colours::black, WDYM::FgColor);
+    svg.diode_2_closed->replaceColour(juce::Colours::black, guiData.getLnf().getFgColor());
     
     svg.opAmp_xml = juce::parseXML(BinaryData::op_amp_svg);
     svg.opAmp = juce::Drawable::createFromSVG(*svg.opAmp_xml);
-    svg.opAmp->replaceColour(juce::Colours::black, WDYM::FgColor);
+    svg.opAmp->replaceColour(juce::Colours::black, guiData.getLnf().getFgColor());
 
     diode1Switch.setImages(&(*svg.diode_1_open), nullptr, nullptr, nullptr, &(*svg.diode_1_closed));
     diode1Switch.setColour(diode1Switch.backgroundOnColourId, juce::Colours::transparentBlack);
@@ -86,7 +86,7 @@ void CircuitDisplay::paint(juce::Graphics& g) {
     juce::Line<float> opAmpInNeg4(
         juce::Point<float>(leftRect.getRight() - 27.f, leftRect.getCentreY()),
         juce::Point<float>(leftRect.getRight() + 75.f, leftRect.getCentreY()));
-    g.setColour(WDYM::FgColor);
+    g.setColour(guiData.getLnf().getFgColor());
     g.drawLine(opAmpInPos, 4.f);
     g.drawLine(opAmpInNeg1, 4.f);
     g.drawLine(opAmpInNeg2, 4.f);
@@ -125,7 +125,7 @@ void CircuitDisplay::paint(juce::Graphics& g) {
 
 #ifdef JUCE_DEBUG
     // Ensure that rect has been scaled appropriately
-    g.setColour(WDYM::TextColor.darker(2));
+    g.setColour(guiData.getLnf().getTextColor().darker(2));
     g.fillRect(rect);
 #endif
 }

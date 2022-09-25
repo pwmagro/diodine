@@ -45,18 +45,22 @@ namespace juce
 
         //==============================================================================
         // Fonts and colours
-        virtual Colour getAccent1() { return WDYM::TextColor; };
-        virtual Colour getAccent2() { return WDYM::FgColor; };
-        virtual Colour getNeutral1() { return WDYM::OutlineColor; };
-        virtual Colour getBase1() { return WDYM::BgColor; };
+        virtual Colour getTextColor() { return WDYM::TextColor(hue); };
+        virtual Colour getFgColor() { return WDYM::FgColor(hue); };
+        virtual Colour getOutlineColor() { return WDYM::OutlineColor(hue); };
+        virtual Colour getBgColor() { return WDYM::BgColor(hue); };
 
         virtual const juce::Font getCustomFontRegular();
         virtual const juce::Font getCustomFontMedium();
         virtual const juce::Font getCustomFontSemiBold();
         virtual const juce::Font getCustomFontBold();
 
+        void setHue(float newHue) { hue = newHue; }
+
+
     private:
         Image bgImage;
+        float hue;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CustomLook)
     };
