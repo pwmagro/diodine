@@ -61,10 +61,12 @@ void TimingDisplay::paint(juce::Graphics& g) {
     scannerLine.startNewSubPath(rect.getX(), rect.getCentreY() - rect.getHeight() * 0.5 * (tanh(1)));
 
     float i = 0;
-    for (; i < trrSlider.getValue(); i += 0.25) {
-        scannerLine.lineTo(juce::Point<float>(rect.getX() + i * rect.getWidth() / trrSlider.getMaximum(), rect.getCentreY() - rect.getHeight() * 0.5 * (tanh(1) - tanh(i / trrSlider.getValue()))));
+    float s = trrSlider.getValue() / trrSlider.getMaximum();
+    for (; i < s; i += 1 / (float)rect.getWidth()) {
+        double y = (12 * i / s) * pow(1 - (i / s), 4);
+        scannerLine.lineTo(rect.getX() + i * rect.getWidth(), rect.getCentreY() - rect.getHeight() * 0.5 * y);
     }
-    scannerLine.lineTo(juce::Point<float>(rect.getX() + i * rect.getWidth() / trrSlider.getMaximum(), rect.getCentreY()));
+    scannerLine.lineTo(juce::Point<float>(rect.getX() + rect.getWidth() * (trrSlider.getValue() / trrSlider.getMaximum()), rect.getCentreY()));
 
     scannerLine.lineTo(rect.getRight(), rect.getCentreY());
     g.setColour(guiData.getLnf().getFgColor().darker(0.4f));

@@ -195,8 +195,8 @@ namespace WDYM {
 
         int trrInSamples = juce::roundFloatToInt(trr * samplesPerMs) - 1;
         rr.clear();
-        for (float i = 0; i <= trrInSamples; i++) {
-            rr.push_back(charge * (tanh(1) - tanh(i / trrInSamples)));
+        for (float i = 0; i <= 1; i += 1 / (float)trrInSamples) {
+            rr.push_back(charge * 12 * i * pow(1 - i, 4));
         }
     }
 
