@@ -58,19 +58,30 @@ void TimingDisplay::paint(juce::Graphics& g) {
     guiData.getLnf().drawGraphBackground(g, rect.toFloat(), 10);
 
     juce::Path scannerLine;
-    scannerLine.startNewSubPath(rect.getX(), rect.getCentreY() - rect.getHeight() * 0.5 * (tanh(1)));
+    scannerLine.startNewSubPath(rect.getX(), rect.getCentreY());
 
     float i = 0;
     float s = trrSlider.getValue() / trrSlider.getMaximum();
     for (; i < s; i += 1 / (float)rect.getWidth()) {
         double y = (12 * i / s) * pow(1 - (i / s), 4);
-        scannerLine.lineTo(rect.getX() + i * rect.getWidth(), rect.getCentreY() - rect.getHeight() * 0.5 * y);
+        scannerLine.lineTo(rect.getX() + i * rect.getWidth(), rect.getCentreY() - rect.getHeight() * 0.4 * y);
     }
     scannerLine.lineTo(juce::Point<float>(rect.getX() + rect.getWidth() * (trrSlider.getValue() / trrSlider.getMaximum()), rect.getCentreY()));
 
     scannerLine.lineTo(rect.getRight(), rect.getCentreY());
     g.setColour(guiData.getLnf().getFgColor().darker(0.4f));
     g.strokePath(scannerLine, juce::PathStrokeType(1.f, juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
-    g.setColour(guiData.getLnf().getTextColor().withSaturation(1.f));
-    g.strokePath(scannerLine, juce::PathStrokeType(5.f * guiData.audioProcessor.getRrStatus(), juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
+    g.setColour(guiData.getLnf().getTextColor().withSaturation(0.8f).withRotatedHue(-0.0625).darker(0.2f));
+    g.strokePath(scannerLine, juce::PathStrokeType(3.f * guiData.audioProcessor.getRrStatus().left, juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
+    
+    scannerLine.applyTransform(juce::AffineTransform::translation(0, rect.getHeight() / 2));
+
+    g.setColour(guiData.getLnf().getFgColor().darker(0.4f));
+    g.strokePath(scannerLine, juce::PathStrokeType(1.f, juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
+    g.setColour(guiData.getLnf().getTextColor().withSaturation(0.8f).withRotatedHue(0.0625).darker(0.2f));
+    g.strokePath(scannerLine, juce::PathStrokeType(3.f * guiData.audioProcessor.getRrStatus().right, juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
+
+    // Draw a border
+    g.setColour(guiData.getLnf().getFgColor().darker(0.6));
+    g.drawRoundedRectangle(rect.toFloat().expanded(2.f), 5.f, 4.f);
 }

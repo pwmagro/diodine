@@ -21,7 +21,7 @@ DiodineAudioProcessor::DiodineAudioProcessor()
                      #endif
                        ),
     treeState (*this, nullptr, "Parameters", createParameters()),
-    diodine()
+    diodine(), fixedBuffer(2050)
 #endif
 {
 
@@ -142,6 +142,7 @@ void DiodineAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
         buffer.clear (i, 0, buffer.getNumSamples());
 
     diodine.process(buffer, treeState);
+    fixedBuffer.process(buffer);
 }
 
 //==============================================================================

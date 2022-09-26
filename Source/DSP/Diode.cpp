@@ -83,7 +83,7 @@ namespace WDYM {
                 auto channelRd = buffer.getReadPointer(c);
 
                 for (int s = 0; s < sm; s++) {
-                    channelWr[s] = (((1 - diodeProperties.mix) * channelRd[s]) + (diodeProperties.mix * wsAsym(channelRd[s], diodeProperties)));
+                    channelWr[s] = -(((1 - diodeProperties.mix) * -channelRd[s]) + (diodeProperties.mix * wsAsym(channelRd[-s], diodeProperties)));
                 }
             }
         }
@@ -93,7 +93,7 @@ namespace WDYM {
                 auto channelRd = buffer.getReadPointer(c);
 
                 for (int s = 0; s < sm; s++) {
-                    channelWr[s] = -(((1 - diodeProperties.mix) * channelRd[s]));
+                    channelWr[s] = (((1 - diodeProperties.mix) * channelRd[s]));
                 }
             }
         }
@@ -164,7 +164,8 @@ namespace WDYM {
 
     void Diode::recover(juce::AudioBuffer<float>& buffer) {
         if (diodeProperties.trr < 0.01) {
-            rrStatus = 0;
+            rrStatus.left = 0;
+            rrStatus.right = 0;
             return;
         }
         for (int n = 0; n < 2; n++) {
@@ -173,19 +174,21 @@ namespace WDYM {
 
             if (lastSamples[n] * diodeProperties.gain > (diodeProperties.vf + 0.05) && chr[0] * diodeProperties.gain < diodeProperties.vf) {
                 recoverScanner[n] = 0;
-                rrStatus = rr[0];
+                n == 0 ? rrStatus.left = 1 : rrStatus.right = 1;
             }
             for (int s = 1; s < buffer.getNumSamples(); s++) {
                 if (chr[s - 1] * diodeProperties.gain > (diodeProperties.vf + 0.05) && chr[s] * diodeProperties.gain < diodeProperties.vf) {
                     recoverScanner[n] = 0;
-                    rrStatus = rr[0];
+                    n == 0 ? rrStatus.left = 1 : rrStatus.right = 1;
                 }
                 else if (recoverScanner[n] < juce::roundFloatToInt(diodeProperties.trr * samplesPerMs - 1)) {
                     ch[s] = std::min(1.f, ch[s] + rr[recoverScanner[n]] * diodeProperties.vf / diodeProperties.gain);
+                    
                     recoverScanner[n]++;
                 }
             }
-            rrStatus *= 0.97;
+            rrStatus.left *= 0.97;
+            rrStatus.right *= 0.97;
         }
     }
 

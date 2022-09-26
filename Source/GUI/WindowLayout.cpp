@@ -12,8 +12,8 @@
 #include "WindowLayout.h"
 
 WindowLayout::WindowLayout(xynth::GuiData& g) : guiData(g), aboutOverlay(g), circuitDisplay(g),
-                                                voltageDisplay(g), timingDisplay(g), logo(g),
-                                                oscilloscopeDisplay(g), hue(g)
+                                                voltageDisplay(g), timingDisplay(g), logo(g), hue(g),
+                                                oscilloscopeDisplay(g, guiData.audioProcessor.getRingBufferRef())
 {
     auto& treeState = g.audioProcessor.treeState;
 

@@ -22,7 +22,11 @@ namespace WDYM {
         void process(juce::AudioBuffer<float>& buffer, juce::AudioProcessorValueTreeState &apvts);
         static float waveshape(float x, juce::AudioProcessorValueTreeState& apvts);
         xynth::RingBuffer::maxmin_t readRingBuffer();
-        float getRrStatus() { return rrStatus; };
+
+        xynth::RingBuffer* getRingBuffer() { return &ringBuffer; }
+
+        typedef struct { float left; float right; } rrStatus_t;
+        rrStatus_t getRrStatus() { return rrStatus; };
 
     private:
         typedef struct {
@@ -52,6 +56,6 @@ namespace WDYM {
 
         std::vector<float> rr;
         float lastTrr;
-        float rrStatus;
+        rrStatus_t rrStatus = { 0, 0 };
     };
 }

@@ -27,6 +27,10 @@
       <GROUP id="{CE2EA949-80A8-4BE1-5C1E-605A036B1C7B}" name="Common">
         <FILE id="RinBsu" name="Constants.cpp" compile="1" resource="0" file="Source/Common/Constants.cpp"/>
         <FILE id="ROFvvY" name="Constants.h" compile="0" resource="0" file="Source/Common/Constants.h"/>
+        <FILE id="dcVTmn" name="FixedWidthBuffer.cpp" compile="1" resource="0"
+              file="Source/Common/FixedWidthBuffer.cpp"/>
+        <FILE id="L8tAf5" name="FixedWidthBuffer.h" compile="0" resource="0"
+              file="Source/Common/FixedWidthBuffer.h"/>
         <FILE id="UQdQAc" name="RingBuffer.cpp" compile="1" resource="0" file="Source/Common/RingBuffer.cpp"/>
         <FILE id="eHocMi" name="RingBuffer.h" compile="0" resource="0" file="Source/Common/RingBuffer.h"/>
       </GROUP>

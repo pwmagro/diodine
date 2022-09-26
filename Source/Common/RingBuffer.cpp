@@ -99,4 +99,16 @@ RingBuffer::maxmin_t RingBuffer::readSamples()
 
     return { loudest, quietest };
 }
+
+float RingBuffer::getSample(int i) {
+    if (i < buffer.size() && i >= 0) {
+        size_t write = writeAtomic.load(std::memory_order_acquire);
+        if (read + i > write) {
+            if (read + i - buffer.size() > write) return 0.f;
+            else return buffer[read + i - buffer.size()];
+        }
+        else return buffer[read + i];
+    }
+    else return 0.f;
+}
 } // namespace xynth

@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "DSP/Diode.h"
+#include "Common/FixedWidthBuffer.h"
 
 //==============================================================================
 /**
@@ -57,10 +58,13 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    xynth::RingBuffer::maxmin_t readRingBuffer() { return diodine.readRingBuffer(); };
-    float getRrStatus() { return diodine.getRrStatus(); };
+    xynth::RingBuffer::maxmin_t readRingBuffer() { return diodine.readRingBuffer(); }
+    xynth::RingBuffer* getRingBufferRef() { return diodine.getRingBuffer(); }
+
+    WDYM::Diode::rrStatus_t getRrStatus() { return diodine.getRrStatus(); };
 
     juce::AudioProcessorValueTreeState treeState;
+    WDYM::FixedWidthBuffer fixedBuffer;
 
 private:
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
