@@ -33,6 +33,8 @@ namespace WDYM {
         spec.maximumBlockSize = samplesPerBlock;
         spec.numChannels = 2;
         ringBuffer.prepare(spec);
+
+        rr.reserve(samplesPerMs * 20);
     }
 
     void Diode::process(juce::AudioBuffer<float>& buffer, juce::AudioProcessorValueTreeState& apvts) {
@@ -83,7 +85,7 @@ namespace WDYM {
                 auto channelRd = buffer.getReadPointer(c);
 
                 for (int s = 0; s < sm; s++) {
-                    channelWr[s] = -(((1 - diodeProperties.mix) * -channelRd[s]) + (diodeProperties.mix * wsAsym(channelRd[-s], diodeProperties)));
+                    channelWr[s] = (((1 - diodeProperties.mix) * channelRd[s]) - (diodeProperties.mix * wsAsym(-channelRd[s], diodeProperties)));
                 }
             }
         }
@@ -163,32 +165,29 @@ namespace WDYM {
     }
 
     void Diode::recover(juce::AudioBuffer<float>& buffer) {
-        if (diodeProperties.trr < 0.01) {
-            rrStatus.left = 0;
-            rrStatus.right = 0;
-            return;
-        }
         for (int n = 0; n < 2; n++) {
             auto chr = buffer.getReadPointer(n);
             auto ch = buffer.getWritePointer(n);
 
             if (lastSamples[n] * diodeProperties.gain > (diodeProperties.vf + 0.05) && chr[0] * diodeProperties.gain < diodeProperties.vf) {
                 recoverScanner[n] = 0;
-                n == 0 ? rrStatus.left = 1 : rrStatus.right = 1;
+                n == 0 ? rrStatus.left = rr[0] : rrStatus.right = rr[0];
             }
             for (int s = 1; s < buffer.getNumSamples(); s++) {
                 if (chr[s - 1] * diodeProperties.gain > (diodeProperties.vf + 0.05) && chr[s] * diodeProperties.gain < diodeProperties.vf) {
                     recoverScanner[n] = 0;
-                    n == 0 ? rrStatus.left = 1 : rrStatus.right = 1;
+                    n == 0 ? rrStatus.left = rr[0] : rrStatus.right = rr[0];
                 }
-                else if (recoverScanner[n] < juce::roundFloatToInt(diodeProperties.trr * samplesPerMs - 1)) {
+                if (recoverScanner[n] < juce::roundFloatToInt(diodeProperties.trr * samplesPerMs - 1)) {
                     ch[s] = std::min(1.f, ch[s] + rr[recoverScanner[n]] * diodeProperties.vf / diodeProperties.gain);
-                    
+                    if ((rr[recoverScanner[n]]) > (n == 0 ? rrStatus.left : rrStatus.right))
+                        n == 0 ? rrStatus.left = rr[recoverScanner[n]] : rrStatus.right = rr[recoverScanner[n]];
+
                     recoverScanner[n]++;
                 }
             }
-            rrStatus.left *= 0.97;
-            rrStatus.right *= 0.97;
+            rrStatus.left *= 0.95;
+            rrStatus.right *= 0.95;
         }
     }
 
@@ -196,10 +195,17 @@ namespace WDYM {
         float charge = 1.f;        // not an actual charge value but yknow
         lastTrr = trr;
 
-        int trrInSamples = juce::roundFloatToInt(trr * samplesPerMs) - 1;
+        int trrInSamples = juce::roundFloatToInt(trr * samplesPerMs);
+
+        auto s = rr.size();
+        auto c = rr.capacity();
         rr.clear();
-        for (float i = 0; i <= 1; i += 1 / (float)trrInSamples) {
-            rr.push_back(charge * 12 * i * pow(1 - i, 4));
+        s = rr.size();
+        c = rr.capacity();
+        
+        for (float i = 0; i <= trrInSamples; i++) {
+            float y = i / (float)trrInSamples;
+            rr.push_back(charge * 12 * y * pow(1 - y, 4));
         }
     }
 

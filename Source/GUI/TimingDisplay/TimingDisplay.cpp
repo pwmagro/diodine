@@ -63,6 +63,7 @@ void TimingDisplay::paint(juce::Graphics& g) {
     float i = 0;
     float s = trrSlider.getValue() / trrSlider.getMaximum();
     for (; i < s; i += 1 / (float)rect.getWidth()) {
+        if (s < 0.001) break;
         double y = (12 * i / s) * pow(1 - (i / s), 4);
         scannerLine.lineTo(rect.getX() + i * rect.getWidth(), rect.getCentreY() - rect.getHeight() * 0.4 * y);
     }
