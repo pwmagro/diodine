@@ -188,12 +188,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout DiodineAudioProcessor::creat
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(GAIN_ID, GAIN_NAME,  1.f,  20.f,   5.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(SAT_ID,  SAT_NAME,   0.f,   0.5f,   0.1f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(VF_ID,   VF_NAME,    0.f,   5.f,   0.2f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(VB_ID,   VB_NAME,  -20.f,   0.f, -12.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(TRR_ID,  TRR_NAME,   0.f,  20.f,   2.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(MIX_ID,  MIX_NAME,   0.f,   1.f,   1.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(GAIN_ID, GAIN_NAME,       1.f,  20.f,   5.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(SAT_ID,  SAT_NAME,        0.f,   0.5f,  0.1f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(VF_ID,   VF_NAME,         0.f,   5.f,   0.2f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(VB_ID,   VB_NAME,       -20.f,   0.f, -12.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(TRR_ID,  TRR_NAME,        0.f,  20.f,   2.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(TRR_MAG_ID, TRR_MAG_NAME, 0.f,   1.f,   0.01f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(MIX_ID,  MIX_NAME,        0.f,   2.f,   1.f));
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>(HUE_ID, HUE_NAME, 0.f, 360.f, 25.f));
 

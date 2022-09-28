@@ -24,7 +24,18 @@ TimingDisplay::TimingDisplay(xynth::GuiData& g) : guiData(g) {
 
     trrAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(treeState, TRR_ID, trrSlider);
 
+    trrMagSlider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
+    trrMagSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+    trrMagSlider.setTextBoxIsEditable(true);
+
+    trrMagSlider.setName(TRR_MAG_NAME);
+    trrMagSlider.setTextValueSuffix("");
+    trrMagSlider.onValueChange = [this]() { repaint(); };
+
+    trrMagAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(treeState, TRR_MAG_ID, trrMagSlider);
+
     addAndMakeVisible(trrSlider);
+    addAndMakeVisible(trrMagSlider);
 }
 
 void TimingDisplay::paint(juce::Graphics& g) {
@@ -37,8 +48,14 @@ void TimingDisplay::paint(juce::Graphics& g) {
     g.setColour(guiData.getLnf().getFgColor());
     g.drawText(((juce::String)TRR_NAME).toLowerCase(), labelRect, juce::Justification::left);
 
+    auto vertSliderRect = rect.removeFromLeft(40).withTrimmedBottom(60);
+    trrMagSlider.setBounds(vertSliderRect);
+    auto gainTextRect = vertSliderRect.translated(0, vertSliderRect.getHeight() - 7.f);
+    g.drawText(((juce::String)"mag").toLowerCase(), gainTextRect, juce::Justification::centredTop);
+
     auto sliderRect = rect.removeFromBottom(40);
-    trrSlider.setBounds(sliderRect);
+    trrSlider.setBounds(sliderRect.withTrimmedBottom(20));
+
 
     sliderRect.reduce(2.f, 2.f);
     g.setFont(guiData.getLnf().getCustomFontRegular().withHeight(25));
@@ -55,16 +72,18 @@ void TimingDisplay::paint(juce::Graphics& g) {
     
     rect.reduce(10, 10);
     rect.removeFromBottom(20.f);
-    guiData.getLnf().drawGraphBackground(g, rect.toFloat(), 10);
+    guiData.getLnf().drawGraphBackground(g, rect.toFloat(), 4);
 
     juce::Path scannerLine;
     scannerLine.clear(); // i don't think this should be necessary but cant hurt, eh
     scannerLine.startNewSubPath(rect.getX(), rect.getCentreY());
 
+    auto c = trrMagSlider.getValue() / trrMagSlider.getMaximum();
+
     float s = trrSlider.getValue() / trrSlider.getMaximum();
     for (float i = 0; i < s; i += 1 / (float)rect.getWidth()) {
         if (s < 0.001) break;
-        double y = (12 * i / s) * pow(1 - (i / s), 4);
+        double y = c * (12 * i / s) * pow(1 - (i / s), 4);
         scannerLine.lineTo(rect.getX() + i * rect.getWidth(), rect.getCentreY() - rect.getHeight() * 0.4 * y);
     }
     scannerLine.lineTo(juce::Point<float>(rect.getX() + rect.getWidth() * (trrSlider.getValue() / trrSlider.getMaximum()), rect.getCentreY()));

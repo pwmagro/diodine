@@ -35,6 +35,7 @@ namespace WDYM {
             float vf = 0;
             float vb = 0;
             float trr = 0;
+            float charge = 0;
             float gain = 0;
             float sat = 0;
             float mix = 1;

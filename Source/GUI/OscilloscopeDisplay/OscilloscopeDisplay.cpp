@@ -18,7 +18,7 @@ OscilloscopeDisplay::OscilloscopeDisplay(xynth::GuiData& g, xynth::RingBuffer* r
 void OscilloscopeDisplay::paint(juce::Graphics& g) {
     auto rect = getLocalBounds();
     guiData.getLnf().drawSectionBackground(g, rect);
-    rect.reduce(25.f, 25.f);
+    rect.reduce(25.f, 5.f);
     //guiData.getLnf().drawGraphBackground(g, rect.toFloat(), 1);
 
     auto& fixedBuffer = guiData.audioProcessor.fixedBuffer;

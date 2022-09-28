@@ -24,7 +24,7 @@ namespace juce
             // do this later.
         }
 
-        juce::ColourGradient grad(to, area.getRight() + area.getWidth() * 0.25f, area.getY(), from, area.getRight() + area.getWidth() * 0.25f, area.getBottom(), true);
+        juce::ColourGradient grad(to, area.getX() + 150, area.getY() + 50, from, area.getCentreX(), area.getCentreY(), true);
         g.setGradientFill(grad);
         g.fillRect(area);
     }

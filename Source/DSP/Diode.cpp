@@ -51,6 +51,7 @@ namespace WDYM {
         diodeProperties.vf = apvts.getRawParameterValue(VF_ID)->load();
         diodeProperties.vb = apvts.getRawParameterValue(VB_ID)->load();
         diodeProperties.trr = apvts.getRawParameterValue(TRR_ID)->load();
+        diodeProperties.charge = apvts.getRawParameterValue(TRR_MAG_ID)->load();
         diodeProperties.gain = apvts.getRawParameterValue(GAIN_ID)->load();
         diodeProperties.sat = apvts.getRawParameterValue(SAT_ID)->load() * 10;
         diodeProperties.mix = apvts.getRawParameterValue(MIX_ID)->load();
@@ -165,6 +166,7 @@ namespace WDYM {
     }
 
     void Diode::recover(juce::AudioBuffer<float>& buffer) {
+        float c = diodeProperties.charge;
 
         for (int n = 0; n < 2; n++) {
             auto chr = buffer.getReadPointer(n);
@@ -180,7 +182,7 @@ namespace WDYM {
                     n == 0 ? rrStatus.left = rr[0] : rrStatus.right = rr[0];
                 }
                 if (recoverScanner[n] < juce::roundFloatToInt(diodeProperties.trr * samplesPerMs - 1)) {
-                    ch[s] = std::min(1.f, ch[s] + rr[recoverScanner[n]] * diodeProperties.vf / diodeProperties.gain);
+                    ch[s] = std::min(1.f, ch[s] + c * rr[recoverScanner[n]] * diodeProperties.vf / diodeProperties.gain);
                     if ((rr[recoverScanner[n]]) > (n == 0 ? rrStatus.left : rrStatus.right))
                         n == 0 ? rrStatus.left = rr[recoverScanner[n]] : rrStatus.right = rr[recoverScanner[n]];
 

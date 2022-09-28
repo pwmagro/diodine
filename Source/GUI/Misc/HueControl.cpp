@@ -28,6 +28,13 @@ namespace WDYM {
     void HueControl::paint(juce::Graphics& g) {
         auto rect = getLocalBounds();
         guiData.getLnf().drawSectionBackground(g, rect);
-        accentHue.slider.setBounds(rect.reduced(10));
+        auto textRect = rect.removeFromBottom(25);
+        accentHue.slider.setBounds(rect.reduced(2));
+
+        auto& lnf = guiData.getLnf();
+
+        g.setFont(lnf.getCustomFontRegular().withHeight(25));
+        g.setColour(lnf.getFgColor());
+        g.drawText(((juce::String)HUE_NAME).toLowerCase(), textRect, juce::Justification::centredTop);
     }
 }

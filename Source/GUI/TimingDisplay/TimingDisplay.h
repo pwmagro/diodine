@@ -23,6 +23,9 @@ private:
 
     juce::Slider trrSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> trrAttach;
+
+    juce::Slider trrMagSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> trrMagAttach;
     
     const int len = 100;
 
