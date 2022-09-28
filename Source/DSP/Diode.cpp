@@ -165,6 +165,7 @@ namespace WDYM {
     }
 
     void Diode::recover(juce::AudioBuffer<float>& buffer) {
+
         for (int n = 0; n < 2; n++) {
             auto chr = buffer.getReadPointer(n);
             auto ch = buffer.getWritePointer(n);
@@ -196,15 +197,14 @@ namespace WDYM {
         lastTrr = trr;
 
         int trrInSamples = juce::roundFloatToInt(trr * samplesPerMs);
-
-        auto s = rr.size();
-        auto c = rr.capacity();
         rr.clear();
-        s = rr.size();
-        c = rr.capacity();
         
         for (float i = 0; i <= trrInSamples; i++) {
             float y = i / (float)trrInSamples;
+            if (trrInSamples == 0) {
+                y = 0;
+            }
+            
             rr.push_back(charge * 12 * y * pow(1 - y, 4));
         }
     }

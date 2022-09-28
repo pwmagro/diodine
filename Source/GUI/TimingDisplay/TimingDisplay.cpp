@@ -58,11 +58,11 @@ void TimingDisplay::paint(juce::Graphics& g) {
     guiData.getLnf().drawGraphBackground(g, rect.toFloat(), 10);
 
     juce::Path scannerLine;
+    scannerLine.clear(); // i don't think this should be necessary but cant hurt, eh
     scannerLine.startNewSubPath(rect.getX(), rect.getCentreY());
 
-    float i = 0;
     float s = trrSlider.getValue() / trrSlider.getMaximum();
-    for (; i < s; i += 1 / (float)rect.getWidth()) {
+    for (float i = 0; i < s; i += 1 / (float)rect.getWidth()) {
         if (s < 0.001) break;
         double y = (12 * i / s) * pow(1 - (i / s), 4);
         scannerLine.lineTo(rect.getX() + i * rect.getWidth(), rect.getCentreY() - rect.getHeight() * 0.4 * y);

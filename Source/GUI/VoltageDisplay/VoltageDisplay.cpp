@@ -61,6 +61,8 @@ void VoltageDisplay::paint(juce::Graphics& g) {
     // Saturation slider owns left 40px of the section
     auto satSliderRect = rect.removeFromLeft(40).withTrimmedBottom(80);
     auto satTextRect = satSliderRect.translated(0, satSliderRect.getHeight() - 7.f);
+    g.setFont(lnf.getCustomFontRegular().withHeight(18));
+    g.setColour(lnf.getFgColor());
     g.drawText(((juce::String)SAT_NAME).toLowerCase(), satTextRect, juce::Justification::centredTop);
     satSlider.setBounds(satSliderRect);
 
@@ -70,8 +72,6 @@ void VoltageDisplay::paint(juce::Graphics& g) {
     auto vbLabelRect = labelRects.withTrimmedRight(rect.getWidth() / 2).withTrimmedLeft(10);
 
     // Draw slider labels
-    g.setFont(lnf.getCustomFontRegular().withHeight(18));
-    g.setColour(lnf.getFgColor());
     g.drawText(((juce::String)VF_NAME).toLowerCase(), vfLabelRect, juce::Justification::left);
     g.drawText(((juce::String)VB_NAME).toLowerCase(), vbLabelRect, juce::Justification::left);
 

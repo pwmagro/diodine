@@ -51,7 +51,7 @@ private:
     // Miscellaneous items
     Logo logo;
 
-    WDYM::HueControl hue;
+    //WDYM::HueControl hue;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WindowLayout)
 };

@@ -19,10 +19,19 @@ namespace juce
         setColour(PopupMenu::backgroundColourId, Colours::black.withAlpha(0.0f));
     }
 
+    void CustomLook::drawBackgroundGradient(Graphics& g, Rectangle<int> area, float angle, juce::Colour from, juce::Colour to) {
+        if (angle >= 0 && angle < 90) {
+            // do this later.
+        }
+
+        juce::ColourGradient grad(to, area.getRight() + area.getWidth() * 0.25f, area.getY(), from, area.getRight() + area.getWidth() * 0.25f, area.getBottom(), true);
+        g.setGradientFill(grad);
+        g.fillRect(area);
+    }
+
     void CustomLook::drawSectionBackground(Graphics& g, Rectangle<int> area)
     {
-        g.setColour(getBgColor());
-        g.fillRoundedRectangle(area.toFloat(), 5.f);
+        
     }
 
     void CustomLook::drawGraphBackground(Graphics& g, Rectangle<float> area, float amplitude = 1)

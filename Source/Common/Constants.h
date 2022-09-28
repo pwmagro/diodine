@@ -52,4 +52,5 @@
 #define WIDTH               720u
 #define HEIGHT              520u
 #define MAX_SCALE           2.f
-#define WINDOW_SCALE_ID     "WINDOW_SCALE"
+#define LOCAL_WIDTH_ID      "WIDTH"
+#define LOCAL_HEIGHT_ID     "HEIGHT"
