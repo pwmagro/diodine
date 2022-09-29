@@ -25,7 +25,8 @@ namespace WDYM {
     private:
         void writeSample(float sample);
         int width = 2050;
-        std::vector<float> workingBuffer;
-        std::vector<float> fullBuffer;
+        std::vector<float>* workingBuffer;
+        std::vector<float>* fullBuffer;
+        bool fullBufferIsValid = false;
     };
 }

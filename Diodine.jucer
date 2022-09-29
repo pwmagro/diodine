@@ -5,6 +5,7 @@
               companyName="WDYM" companyCopyright="Peter Magro" companyWebsite="www.petermagro.com">
   <MAINGROUP id="FnOQe2" name="Diodine">
     <GROUP id="{C5057EFF-3CD6-3CEC-C90A-7DD871A5C714}" name="Assets">
+      <FILE id="DfF9yU" name="bg.svg" compile="0" resource="1" file="Assets/bg.svg"/>
       <FILE id="cepXvZ" name="diode_1_closed.svg" compile="0" resource="1"
             file="Assets/diode_1_closed.svg"/>
       <FILE id="HiOONt" name="diode_1_open.svg" compile="0" resource="1"

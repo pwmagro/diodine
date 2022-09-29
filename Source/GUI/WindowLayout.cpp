@@ -37,9 +37,9 @@ void WindowLayout::paint (juce::Graphics& g)
 {
     auto rect = getLocalBounds();
     const int spacing = 5;
-    guiData.getLnf().drawBackgroundGradient(g, rect, 45, guiData.getLnf().getOutlineColor().darker(1), guiData.getLnf().getTextColor().darker(4));
-
-    g.setColour(guiData.getLnf().getFgColor());
+    guiData.getLnf().drawMainBackground(g, rect);
+    
+    g.setColour(guiData.getLnf().getTextColor().darker(1.5).withAlpha(0.2f));
     auto topRect = rect.removeFromTop(rect.getHeight() / 3.f);
     g.drawHorizontalLine(topRect.getBottom(), topRect.getX() + 20, topRect.getRight() - 20);
     auto topLeftRect = topRect.removeFromLeft(300.f);

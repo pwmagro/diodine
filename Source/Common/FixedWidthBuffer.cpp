@@ -12,15 +12,26 @@
 
 namespace WDYM {
     FixedWidthBuffer::FixedWidthBuffer() {
-        workingBuffer.resize(width);
-        fullBuffer.resize(width);
+        workingBuffer = new std::vector<float>;
+        fullBuffer = new std::vector<float>;
+
+        workingBuffer->resize(width);
+        fullBuffer->resize(width);
     }
 
     FixedWidthBuffer::FixedWidthBuffer(int width) {
         this->width = width;
+
+        workingBuffer = new std::vector<float>;
+        fullBuffer = new std::vector<float>;
+
+        workingBuffer->resize(width);
+        fullBuffer->resize(width);
     }
 
     FixedWidthBuffer::~FixedWidthBuffer() {
+        delete workingBuffer;
+        delete fullBuffer;
     }
 
     void FixedWidthBuffer::process(juce::AudioBuffer<float>& buffer) {
@@ -40,23 +51,28 @@ namespace WDYM {
         static float workingIndex = 0;
 
         if (workingIndex < width) {
-            workingBuffer.push_back(sample);
+            workingBuffer->push_back(sample);
             workingIndex++;
         }
 
         else {
-            fullBuffer = workingBuffer;
-            workingBuffer.clear();
+            std::vector<float>* temp = workingBuffer;
+            workingBuffer = fullBuffer;
+            fullBuffer = temp;
+            workingBuffer->clear();
             workingIndex = 0;
         }
     }
 
     float FixedWidthBuffer::getSample(int i) {
+        if (fullBuffer->size() != width) return 0.0; // the buffer isn't valid. oops
+
         if (i < 0 || i >= width) {
             throw std::exception("Index out of bounds");
             return 0.f;
         }
-        return fullBuffer[i];
+        
+        return (*fullBuffer)[i];
     }
 
 }

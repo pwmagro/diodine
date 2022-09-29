@@ -40,25 +40,28 @@ TimingDisplay::TimingDisplay(xynth::GuiData& g) : guiData(g) {
 
 void TimingDisplay::paint(juce::Graphics& g) {
     auto rect = getLocalBounds();
-    guiData.getLnf().drawSectionBackground(g, rect);
+    auto& lnf = guiData.getLnf();
+
+    lnf.drawSectionBackground(g, rect);
     rect.reduce(10, 10);
 
-    auto labelRect = rect.removeFromBottom(20).withTrimmedLeft(10);
-    g.setFont(guiData.getLnf().getCustomFontRegular().withHeight(18));
-    g.setColour(guiData.getLnf().getFgColor());
+    auto vertSliderRect = rect.removeFromLeft(40).withTrimmedBottom(80);
+    auto gainTextRect = vertSliderRect.translated(0, vertSliderRect.getHeight() - 7.f);
+    g.setFont(lnf.getCustomFontRegular().withHeight(22));
+    g.setColour(lnf.getFgColor());
+    g.drawText(((juce::String)"mag").toLowerCase(), gainTextRect, juce::Justification::centredTop);
+    trrMagSlider.setBounds(vertSliderRect);
+
+    auto labelRect = rect.removeFromBottom(20).withTrimmedLeft(10)
+        
+        ;
     g.drawText(((juce::String)TRR_NAME).toLowerCase(), labelRect, juce::Justification::left);
 
-    auto vertSliderRect = rect.removeFromLeft(40).withTrimmedBottom(60);
-    trrMagSlider.setBounds(vertSliderRect);
-    auto gainTextRect = vertSliderRect.translated(0, vertSliderRect.getHeight() - 7.f);
-    g.drawText(((juce::String)"mag").toLowerCase(), gainTextRect, juce::Justification::centredTop);
-
     auto sliderRect = rect.removeFromBottom(40);
-    trrSlider.setBounds(sliderRect.withTrimmedBottom(20));
+    trrSlider.setBounds(sliderRect);
 
-
-    sliderRect.reduce(2.f, 2.f);
-    g.setFont(guiData.getLnf().getCustomFontRegular().withHeight(25));
+    g.setFont(lnf.getCustomFontRegular().withHeight(25));
+    g.setColour(lnf.getTextColor());
 
     auto sliderPos = trrSlider.getPositionOfValue(trrSlider.getValue());
     auto newWidth = 80.f;
@@ -67,12 +70,12 @@ void TimingDisplay::paint(juce::Graphics& g) {
     auto width = trrSlider.getWidth();
     juce::Rectangle<float> textRect(std::min(std::max((sliderPos - 20.f), x + 10.f), x + width - 90.f), y, newWidth, 25.f);
 
-    g.setColour(guiData.getLnf().getTextColor());
+    g.setColour(lnf.getTextColor());
     g.drawText(trrSlider.getTextFromValue(trrSlider.getValue()), textRect, juce::Justification::centred);
     
     rect.reduce(10, 10);
     rect.removeFromBottom(20.f);
-    guiData.getLnf().drawGraphBackground(g, rect.toFloat(), 4);
+    lnf.drawGraphBackground(g, rect.toFloat(), 4);
 
     juce::Path scannerLine;
     scannerLine.clear(); // i don't think this should be necessary but cant hurt, eh
@@ -84,24 +87,24 @@ void TimingDisplay::paint(juce::Graphics& g) {
     for (float i = 0; i < s; i += 1 / (float)rect.getWidth()) {
         if (s < 0.001) break;
         double y = c * (12 * i / s) * pow(1 - (i / s), 4);
-        scannerLine.lineTo(rect.getX() + i * rect.getWidth(), rect.getCentreY() - rect.getHeight() * 0.4 * y);
+        scannerLine.lineTo(rect.getX() + i * rect.getWidth(), rect.getCentreY() - rect.getHeight() * 0.48 * y);
     }
     scannerLine.lineTo(juce::Point<float>(rect.getX() + rect.getWidth() * (trrSlider.getValue() / trrSlider.getMaximum()), rect.getCentreY()));
 
     scannerLine.lineTo(rect.getRight(), rect.getCentreY());
-    g.setColour(guiData.getLnf().getFgColor().darker(0.4f));
+    g.setColour(lnf.getFgColor().darker(0.4f));
     g.strokePath(scannerLine, juce::PathStrokeType(1.f, juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
-    g.setColour(guiData.getLnf().getTextColor().withSaturation(0.8f).withRotatedHue(-0.0625).darker(0.2f));
+    g.setColour(lnf.getTextColor().withSaturation(0.8f).withRotatedHue(-0.0625).darker(0.2f));
     g.strokePath(scannerLine, juce::PathStrokeType(3.f * guiData.audioProcessor.getRrStatus().left, juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
     
     scannerLine.applyTransform(juce::AffineTransform::translation(0, rect.getHeight() / 2));
 
-    g.setColour(guiData.getLnf().getFgColor().darker(0.4f));
+    g.setColour(lnf.getFgColor().darker(0.4f));
     g.strokePath(scannerLine, juce::PathStrokeType(1.f, juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
-    g.setColour(guiData.getLnf().getTextColor().withSaturation(0.8f).withRotatedHue(0.0625).darker(0.2f));
+    g.setColour(lnf.getTextColor().withSaturation(0.8f).withRotatedHue(0.0625).darker(0.2f));
     g.strokePath(scannerLine, juce::PathStrokeType(3.f * guiData.audioProcessor.getRrStatus().right, juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
 
     // Draw a border
-    g.setColour(guiData.getLnf().getFgColor().darker(0.6));
+    g.setColour(lnf.getFgColor().darker(0.6));
     g.drawRoundedRectangle(rect.toFloat().expanded(2.f), 5.f, 4.f);
 }

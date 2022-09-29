@@ -29,7 +29,7 @@ namespace juce
         virtual void drawGraphBackground(Graphics& g, Rectangle<float> area, float amplitude);
         virtual void drawGraphForeground(Graphics& g, Rectangle<float> area);
         virtual Image& getBackgroundImage() { return bgImage; };
-        virtual void drawBackgroundGradient(Graphics& g, Rectangle<int> area, float angle, juce::Colour from, juce::Colour to);
+        virtual void drawMainBackground(Graphics& g, Rectangle<int> area);
 
         //==============================================================================
         // Sliders and buttons
@@ -62,6 +62,9 @@ namespace juce
     private:
         Image bgImage;
         float hue = 0.47f;
+
+        std::unique_ptr<juce::XmlElement> bg_xml;
+        std::unique_ptr<juce::Drawable> bg_svg;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CustomLook)
     };

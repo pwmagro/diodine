@@ -17,21 +17,17 @@ namespace juce
         // Ensures the background of popup menus is transparent
         // allows corners to be rounded
         setColour(PopupMenu::backgroundColourId, Colours::black.withAlpha(0.0f));
+        bg_xml = juce::parseXML(BinaryData::bg_svg);
+        bg_svg = juce::Drawable::createFromSVG(*bg_xml);
     }
 
-    void CustomLook::drawBackgroundGradient(Graphics& g, Rectangle<int> area, float angle, juce::Colour from, juce::Colour to) {
-        if (angle >= 0 && angle < 90) {
-            // do this later.
-        }
-
-        juce::ColourGradient grad(to, area.getX() + 150, area.getY() + 50, from, area.getCentreX(), area.getCentreY(), true);
-        g.setGradientFill(grad);
-        g.fillRect(area);
+    void CustomLook::drawMainBackground(Graphics& g, Rectangle<int> area) {
+        bg_svg->setTransformToFit(area.toFloat(), juce::RectanglePlacement::stretchToFit);
+        bg_svg->draw(g, 1, juce::AffineTransform());
     }
 
     void CustomLook::drawSectionBackground(Graphics& g, Rectangle<int> area)
     {
-        
     }
 
     void CustomLook::drawGraphBackground(Graphics& g, Rectangle<float> area, float amplitude = 1)
@@ -42,7 +38,7 @@ namespace juce
         float lineFreqSmall = std::pow(2, std::max(((int)(amplitude + division) / divisint), 1));
         float smallOpacity = ((amplitude / division) - (int)(amplitude / division));
 
-        g.setColour(getOutlineColor());
+        g.setColour(juce::Colours::black.withAlpha(0.4f));
         g.fillRoundedRectangle(area, 3.f);
 
         g.setColour(getFgColor().withAlpha(0.1f));
@@ -118,12 +114,12 @@ namespace juce
         // Draw path of the slider backgound (in darker background colour)
         juce::Path backgroundArc;
         backgroundArc.addCentredArc(centreX, centreY, radius, radius, 0.0f, rotaryStartAngle, rotaryEndAngle, true);
-        g.setColour(bgColour);
-        g.strokePath(backgroundArc, juce::PathStrokeType(thickness, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
-
+        
 
         if (slider.getRotaryParameters().stopAtEnd) {    
             // Draw path of slider foreground (in white)
+            g.setColour(bgColour);
+            g.strokePath(backgroundArc, juce::PathStrokeType(thickness, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
             juce::Path foregroundArc;
             foregroundArc.addCentredArc(centreX, centreY, radius, radius, 0.0f, rotaryStartAngle, angle, true);
             g.setColour(mainColour);
@@ -131,7 +127,9 @@ namespace juce
         }
 
         else {
-            juce::Point<float> start(centreX + 0.6f * radius * cos(angle), centreY + 0.6f * radius * sin(angle));
+            g.setColour(getTextColor().darker(1));
+            g.strokePath(backgroundArc, juce::PathStrokeType(thickness, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+            juce::Point<float> start(centreX + 0.5f * radius * cos(angle), centreY + 0.6f * radius * sin(angle));
             juce::Point<float> end(centreX + radius * cos(angle), centreY + radius * sin(angle));
             juce::Path indicator;
             indicator.startNewSubPath(start);
