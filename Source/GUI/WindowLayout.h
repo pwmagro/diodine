@@ -30,6 +30,7 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+    float x = 0;
 private:
     xynth::GuiData& guiData;
 

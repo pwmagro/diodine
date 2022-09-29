@@ -22,8 +22,6 @@ TimingDisplay::TimingDisplay(xynth::GuiData& g) : guiData(g) {
     trrSlider.setTextValueSuffix("ms");
     trrSlider.onValueChange = [this]() { repaint(); };
 
-    trrAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(treeState, TRR_ID, trrSlider);
-
     trrMagSlider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
     trrMagSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     trrMagSlider.setTextBoxIsEditable(true);
@@ -32,10 +30,21 @@ TimingDisplay::TimingDisplay(xynth::GuiData& g) : guiData(g) {
     trrMagSlider.setTextValueSuffix("");
     trrMagSlider.onValueChange = [this]() { repaint(); };
 
+    trrSkew.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    trrSkew.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+    trrSkew.setTextBoxIsEditable(true);
+
+    trrSkew.setName(TRR_SKEW_NAME);
+    trrSkew.setTextValueSuffix("");
+    trrSkew.onValueChange = [this]() { repaint(); };
+
+    trrAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(treeState, TRR_ID, trrSlider);
     trrMagAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(treeState, TRR_MAG_ID, trrMagSlider);
+    skewAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(treeState, TRR_SKEW_ID, trrSkew);
 
     addAndMakeVisible(trrSlider);
     addAndMakeVisible(trrMagSlider);
+    addAndMakeVisible(trrSkew);
 }
 
 void TimingDisplay::paint(juce::Graphics& g) {
@@ -58,7 +67,8 @@ void TimingDisplay::paint(juce::Graphics& g) {
     g.drawText(((juce::String)TRR_NAME).toLowerCase(), labelRect, juce::Justification::left);
 
     auto sliderRect = rect.removeFromBottom(40);
-    trrSlider.setBounds(sliderRect);
+    trrSlider.setBounds(sliderRect.withTrimmedLeft(sliderRect.getWidth() / 2.f));
+    trrSkew.setBounds(sliderRect.withTrimmedRight(sliderRect.getWidth() / 2.f));
 
     g.setFont(lnf.getCustomFontRegular().withHeight(25));
     g.setColour(lnf.getTextColor());
@@ -81,14 +91,23 @@ void TimingDisplay::paint(juce::Graphics& g) {
     scannerLine.clear(); // i don't think this should be necessary but cant hurt, eh
     scannerLine.startNewSubPath(rect.getX(), rect.getCentreY());
 
-    auto c = trrMagSlider.getValue() / trrMagSlider.getMaximum();
+    auto tension = trrSkew.getValue();
 
     float s = trrSlider.getValue() / trrSlider.getMaximum();
-    for (float i = 0; i < s; i += 1 / (float)rect.getWidth()) {
+    for (float i = 0; i < tension; i += 1 / (float)rect.getWidth()) {
+        // First section
+        auto y = -(i / pow(tension, 2)) * (2 * tension - i);
+        scannerLine.lineTo(rect.getX() + rect.getWidth() * i * s, rect.getCentreY() + y * rect.getHeight() * 0.47);
         if (s < 0.001) break;
-        double y = c * (12 * i / s) * pow(1 - (i / s), 4);
-        scannerLine.lineTo(rect.getX() + i * rect.getWidth(), rect.getCentreY() - rect.getHeight() * 0.48 * y);
     }
+
+    for (float i = tension; i < 1; i += 1 / (float)rect.getWidth()) {
+        // Second section
+        auto y = pow((i - 1) * (i + (1 - 2 * tension)) / ((tension - 1) * (1 - tension)), 4);
+        scannerLine.lineTo(rect.getX() + rect.getWidth() * i * s, rect.getCentreY() - y * rect.getHeight() * 0.47);
+        if (s < 0.001) break;
+    }
+
     scannerLine.lineTo(juce::Point<float>(rect.getX() + rect.getWidth() * (trrSlider.getValue() / trrSlider.getMaximum()), rect.getCentreY()));
 
     scannerLine.lineTo(rect.getRight(), rect.getCentreY());

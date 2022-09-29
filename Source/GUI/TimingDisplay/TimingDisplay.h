@@ -24,6 +24,9 @@ private:
     juce::Slider trrSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> trrAttach;
 
+    juce::Slider trrSkew;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> skewAttach;
+
     juce::Slider trrMagSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> trrMagAttach;
     

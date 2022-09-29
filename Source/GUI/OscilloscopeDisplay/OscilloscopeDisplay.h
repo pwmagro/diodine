@@ -23,3 +23,11 @@ private:
 
     void timerCallback() override;
 };
+
+
+class A {
+public:
+    A();
+    ~A();
+
+};
