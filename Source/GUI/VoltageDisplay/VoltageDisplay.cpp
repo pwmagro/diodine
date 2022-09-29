@@ -142,8 +142,6 @@ void VoltageDisplay::drawWaveshaper(juce::Rectangle<int> rect, juce::Graphics& g
     // TODO: modify ringbuffer class to supply separate pos and neg values
     waveshape.clear();
     auto xmaxmin = guiData.audioProcessor.readRingBuffer();
-    static float lastXPos = xmaxmin.max;
-    static float lastXNeg = xmaxmin.min;
     auto xPos = xmaxmin.max;
     auto xNeg = xmaxmin.min;
     if (xPos < lastXPos)

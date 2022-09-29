@@ -28,5 +28,6 @@ namespace WDYM {
         std::vector<float>* workingBuffer;
         std::vector<float>* fullBuffer;
         bool fullBufferIsValid = false;
+        float workingIndex = 0;
     };
 }

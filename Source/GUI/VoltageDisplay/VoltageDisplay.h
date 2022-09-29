@@ -35,4 +35,7 @@ private:
     juce::Path waveshape;
     
     void timerCallback() override;
+
+    float lastXPos = 0;
+    float lastXNeg = 0;
 };

@@ -101,7 +101,7 @@ void TimingDisplay::paint(juce::Graphics& g) {
 
     g.setColour(lnf.getFgColor().darker(0.4f));
     g.strokePath(scannerLine, juce::PathStrokeType(1.f, juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
-    g.setColour(lnf.getTextColor().withSaturation(0.8f).withRotatedHue(0.0625).darker(0.2f));
+    g.setColour(lnf.getTextColor().withSaturation(0.8f).withRotatedHue(0.0725).darker(0.2f));
     g.strokePath(scannerLine, juce::PathStrokeType(3.f * guiData.audioProcessor.getRrStatus().right, juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
 
     // Draw a border

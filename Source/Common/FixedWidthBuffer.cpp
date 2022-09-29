@@ -48,7 +48,6 @@ namespace WDYM {
     }
 
     void FixedWidthBuffer::writeSample(float sample) {
-        static float workingIndex = 0;
 
         if (workingIndex < width) {
             workingBuffer->push_back(sample);
