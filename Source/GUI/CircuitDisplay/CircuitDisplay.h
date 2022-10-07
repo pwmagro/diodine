@@ -24,25 +24,15 @@ private:
     xynth::FullSlider gainSlider;
     xynth::FullSlider mixSlider;
 
-    juce::DrawableButton diode1Switch;
+    juce::ToggleButton diode1Switch;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> diode1Attachment;
 
-    juce::DrawableButton diode2Switch;
+    juce::ToggleButton diode2Switch;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> diode2Attachment;
 
-    struct {
-        std::unique_ptr<juce::XmlElement> diode_1_open_xml;
-        std::unique_ptr<juce::Drawable>   diode_1_open;
-        std::unique_ptr<juce::XmlElement> diode_2_open_xml;
-        std::unique_ptr<juce::Drawable>   diode_2_open;
-        std::unique_ptr<juce::XmlElement> diode_1_closed_xml;
-        std::unique_ptr<juce::Drawable>   diode_1_closed;
-        std::unique_ptr<juce::XmlElement> diode_2_closed_xml;
-        std::unique_ptr<juce::Drawable>   diode_2_closed;
-
-        std::unique_ptr<juce::XmlElement> opAmp_xml;
-        std::unique_ptr<juce::Drawable>   opAmp;
-    } svg;
-
     xynth::GuiData& guiData;
+
+    void drawDiode(juce::Graphics& g, juce::Rectangle<float> bounds, bool facingLeft = false);
+    void drawSwitch(juce::Graphics& g, juce::Rectangle<float> bounds, bool isOpen);
+    void drawOpAmp(juce::Graphics& g, juce::Rectangle<float> bounds);
 };
