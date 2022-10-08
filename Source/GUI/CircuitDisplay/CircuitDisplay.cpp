@@ -16,11 +16,15 @@ CircuitDisplay::CircuitDisplay(xynth::GuiData& g) : guiData(g)
     diode2Attachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(g.audioProcessor.treeState, DIODE_2_ID, diode2Switch);
 
     gainSlider.init(g.audioProcessor.treeState, GAIN_ID);
-    mixSlider.init(g.audioProcessor.treeState, MIX_ID);
+
+    auto stateChange = [this]() { repaint(); };
+
+    diode1Switch.onStateChange = stateChange;
+    diode2Switch.onStateChange = stateChange;
+    gainSlider.slider.onValueChange = stateChange;
 
     addAndMakeVisible(diode1Switch);
     addAndMakeVisible(diode2Switch);
-    addAndMakeVisible(gainSlider.slider);
     addAndMakeVisible(gainSlider.slider);
 }
 
@@ -36,11 +40,25 @@ void CircuitDisplay::paint(juce::Graphics& g) {
     drawOpAmp(g, topLeftRect);
     // draw gain stuff
 
+    juce::Path connections;
+    connections.startNewSubPath(topLeftRect.getX(), topLeftRect.getCentreY() + 15);
+    connections.lineTo(leftRect.getX(), leftRect.getCentreY());
+    connections.lineTo(leftRect.getRight(), leftRect.getCentreY());
+    connections.lineTo(leftRect.getRight(), topLeftRect.getCentreY());
+
+    gainSlider.slider.setBounds(juce::Rectangle<int>(50, 50).withCentre(leftRect.getCentre().roundToInt()));
+
+    g.setFont(lnf.getCustomFontRegular().withHeight(20));
+    g.drawText(juce::String(GAIN_NAME).toLowerCase(), leftRect.removeFromBottom(leftRect.getHeight() / 2.f - 25), juce::Justification::centred);
+
     auto swRect = rect.removeFromLeft(oneQuarter);
     auto swTopRect = swRect.removeFromTop(swRect.getHeight() / 2.f);
 
-    drawSwitch(g, swTopRect, false);
-    drawSwitch(g, swRect, true);
+    diode1Switch.setBounds(swTopRect.toNearestInt());
+    diode2Switch.setBounds(swRect.toNearestInt());
+
+    drawSwitch(g, swTopRect, diode1Switch.getToggleState());
+    drawSwitch(g, swRect, diode2Switch.getToggleState());
 
     auto diodeRect = rect.removeFromLeft(oneQuarter);
     auto diodeTopRect = diodeRect.removeFromTop(diodeRect.getHeight() / 2.f);
@@ -48,10 +66,30 @@ void CircuitDisplay::paint(juce::Graphics& g) {
     drawDiode(g, diodeTopRect, false);
     drawDiode(g, diodeRect, true);
 
+    connections.startNewSubPath(diodeRect.getRight() - 2, diodeRect.getCentreY());
+    connections.lineTo(diodeTopRect.getRight() - 2, diodeTopRect.getCentreY() + 1);
+    connections.startNewSubPath(diodeTopRect.getRight() - 2, diodeTopRect.getCentreY());
+    connections.lineTo(rect.getRight() - 15, diodeTopRect.getCentreY());
+
+    connections.addEllipse(rect.getRight() - 15, diodeTopRect.getCentreY() - 4, 8, 8);
+
+    connections.startNewSubPath(rect.getRight() - 15, diodeRect.getCentreY() - 12);
+    connections.lineTo(rect.getRight() - 15, diodeRect.getCentreY());
+
+    connections.startNewSubPath(rect.getRight() - 30, diodeRect.getCentreY());
+    connections.lineTo(rect.getRight(), diodeRect.getCentreY());
+
+    connections.startNewSubPath(rect.getRight() - 23, diodeRect.getCentreY() + 8);
+    connections.lineTo(rect.getRight() - 7, diodeRect.getCentreY() + 8);
+
+    connections.startNewSubPath(rect.getRight() - 18, diodeRect.getCentreY() + 16);
+    connections.lineTo(rect.getRight() - 12, diodeRect.getCentreY() + 16);
+
+
+    g.setColour(guiData.getLnf().getFgColor());
+    g.strokePath(connections, juce::PathStrokeType(4.f));
+
 #ifdef JUCE_DEBUG
-    // Ensure that rect has been scaled appropriately
-    g.setColour(guiData.getLnf().getTextColor().darker(2));
-    g.fillRect(rect);
 #endif
 }
 
@@ -108,7 +146,7 @@ void CircuitDisplay::drawSwitch(juce::Graphics& g, juce::Rectangle<float> bounds
     sw.startNewSubPath(center.getX() - offset + 8, center.getY());
 
     if (isOpen) {
-        sw.lineTo(center.getX() + offset - 8, center.getY() - (offset / 2.f));
+        sw.lineTo(center.getX() + offset - 12, center.getY() - (offset * 0.65f));
     }
     else {
         sw.lineTo(center.getX() + offset - 8, center.getY());

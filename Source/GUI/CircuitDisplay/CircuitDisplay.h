@@ -24,10 +24,10 @@ private:
     xynth::FullSlider gainSlider;
     xynth::FullSlider mixSlider;
 
-    juce::ToggleButton diode1Switch;
+    SwitchButton diode1Switch;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> diode1Attachment;
 
-    juce::ToggleButton diode2Switch;
+    SwitchButton diode2Switch;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> diode2Attachment;
 
     xynth::GuiData& guiData;
