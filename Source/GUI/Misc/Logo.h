@@ -23,6 +23,7 @@ private:
     xynth::GuiData& guiData;
     std::unique_ptr<juce::XmlElement> logo_xml;
     std::unique_ptr<juce::Drawable> logo_svg;
+    std::unique_ptr<juce::Drawable> logo_en_svg;
 
     juce::DrawableButton button;
 };

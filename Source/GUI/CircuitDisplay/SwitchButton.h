@@ -12,6 +12,6 @@
 #include <JuceHeader.h>
 #include "../Utils/GuiData.h"
 
-class SwitchButton : public juce::ImageButton {
-
+class SwitchButton : public juce::ToggleButton {
+    void paint(juce::Graphics& g) override { } // lol
 };
