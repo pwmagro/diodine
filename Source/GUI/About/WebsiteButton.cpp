@@ -25,12 +25,12 @@ void WebsiteButton::paint (juce::Graphics& g)
     auto rect = getLocalBounds().toFloat();
     auto& lnf = guiData.getLnf();
 
-    auto bgCol = lnf.getAccent2().brighter(isMouseOver() ? 0.15f : 0.f);
+    auto bgCol = lnf.getFgColor().brighter(isMouseOver() ? 0.15f : 0.f);
     bgCol = bgCol.darker(isMouseButtonDown() ? 0.2f : 0.f);
     g.setColour(bgCol);
     g.fillRoundedRectangle(rect, 6.f);
 
-    g.setColour(lnf.getBase1());
+    g.setColour(lnf.getBgColor());
     g.setFont(lnf.getCustomFontMedium().withHeight(32.f));
     g.drawText("Visit Website", rect, juce::Justification::centred);
 }

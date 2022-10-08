@@ -5,8 +5,18 @@
               companyName="WDYM" companyCopyright="Peter Magro" companyWebsite="www.petermagro.com">
   <MAINGROUP id="FnOQe2" name="Diodine">
     <GROUP id="{C5057EFF-3CD6-3CEC-C90A-7DD871A5C714}" name="Assets">
+      <FILE id="DfF9yU" name="bg.svg" compile="0" resource="1" file="Assets/bg.svg"/>
+      <FILE id="cepXvZ" name="diode_1_closed.svg" compile="0" resource="1"
+            file="Assets/diode_1_closed.svg"/>
+      <FILE id="HiOONt" name="diode_1_open.svg" compile="0" resource="1"
+            file="Assets/diode_1_open.svg"/>
+      <FILE id="CheFks" name="diode_2_closed.svg" compile="0" resource="1"
+            file="Assets/diode_2_closed.svg"/>
+      <FILE id="wzNBNc" name="diode_2_open.svg" compile="0" resource="1"
+            file="Assets/diode_2_open.svg"/>
       <FILE id="HHANNL" name="diodine_logo.svg" compile="0" resource="1"
             file="Assets/diodine_logo.svg"/>
+      <FILE id="g7vtGE" name="op_amp.svg" compile="0" resource="1" file="Assets/op_amp.svg"/>
       <FILE id="MTvL4m" name="Raleway-Light.ttf" compile="0" resource="1"
             file="Assets/Raleway-Light.ttf"/>
       <FILE id="M4tj0S" name="Raleway-Medium.ttf" compile="0" resource="1"
@@ -18,6 +28,12 @@
       <GROUP id="{CE2EA949-80A8-4BE1-5C1E-605A036B1C7B}" name="Common">
         <FILE id="RinBsu" name="Constants.cpp" compile="1" resource="0" file="Source/Common/Constants.cpp"/>
         <FILE id="ROFvvY" name="Constants.h" compile="0" resource="0" file="Source/Common/Constants.h"/>
+        <FILE id="dcVTmn" name="FixedWidthBuffer.cpp" compile="1" resource="0"
+              file="Source/Common/FixedWidthBuffer.cpp"/>
+        <FILE id="L8tAf5" name="FixedWidthBuffer.h" compile="0" resource="0"
+              file="Source/Common/FixedWidthBuffer.h"/>
+        <FILE id="UQdQAc" name="RingBuffer.cpp" compile="1" resource="0" file="Source/Common/RingBuffer.cpp"/>
+        <FILE id="eHocMi" name="RingBuffer.h" compile="0" resource="0" file="Source/Common/RingBuffer.h"/>
       </GROUP>
       <GROUP id="{3201A1A2-EC8D-E8E9-1D07-40349F8EF37E}" name="GUI">
         <GROUP id="{321EBD7A-AB34-2B80-B28C-D2A925B5D016}" name="OscilloscopeDisplay">
@@ -29,9 +45,12 @@
         <GROUP id="{4D174CC2-05B4-0AFD-A67E-685B0A0964F3}" name="CustomLooks">
           <FILE id="KWJeDa" name="CustomLook.cpp" compile="1" resource="0" file="Source/GUI/CustomLooks/CustomLook.cpp"/>
           <FILE id="fp7OpF" name="CustomLook.h" compile="0" resource="0" file="Source/GUI/CustomLooks/CustomLook.h"/>
+          <FILE id="mS3V4f" name="Styles.cpp" compile="1" resource="0" file="Source/GUI/CustomLooks/Styles.cpp"/>
           <FILE id="Urw06c" name="Styles.h" compile="0" resource="0" file="Source/GUI/CustomLooks/Styles.h"/>
         </GROUP>
         <GROUP id="{E712B4B0-8D74-4C7B-9D0D-ED5F56F404D1}" name="Misc">
+          <FILE id="EMf7Qq" name="HueControl.cpp" compile="1" resource="0" file="Source/GUI/Misc/HueControl.cpp"/>
+          <FILE id="V8hV7r" name="HueControl.h" compile="0" resource="0" file="Source/GUI/Misc/HueControl.h"/>
           <FILE id="H6qgXU" name="Logo.cpp" compile="1" resource="0" file="Source/GUI/Misc/Logo.cpp"/>
           <FILE id="sECsRH" name="Logo.h" compile="0" resource="0" file="Source/GUI/Misc/Logo.h"/>
         </GROUP>
@@ -41,27 +60,17 @@
           <FILE id="qCKJpV" name="TimingDisplay.h" compile="0" resource="0" file="Source/GUI/TimingDisplay/TimingDisplay.h"/>
           <FILE id="hoLTsQ" name="TimingGraph.cpp" compile="1" resource="0" file="Source/GUI/TimingDisplay/TimingGraph.cpp"/>
           <FILE id="ikt86N" name="TimingGraph.h" compile="0" resource="0" file="Source/GUI/TimingDisplay/TimingGraph.h"/>
-          <FILE id="IimTql" name="TrrSlider.cpp" compile="1" resource="0" file="Source/GUI/TimingDisplay/TrrSlider.cpp"/>
-          <FILE id="wV6nMw" name="TrrSlider.h" compile="0" resource="0" file="Source/GUI/TimingDisplay/TrrSlider.h"/>
         </GROUP>
         <GROUP id="{C0E74794-5111-3275-CAEB-A57E1B13444C}" name="CircuitDisplay">
           <FILE id="jxu3xn" name="CircuitDisplay.cpp" compile="1" resource="0"
                 file="Source/GUI/CircuitDisplay/CircuitDisplay.cpp"/>
           <FILE id="pC8JeR" name="CircuitDisplay.h" compile="0" resource="0"
                 file="Source/GUI/CircuitDisplay/CircuitDisplay.h"/>
-          <FILE id="HVVqo4" name="GainSlider.cpp" compile="1" resource="0" file="Source/GUI/CircuitDisplay/GainSlider.cpp"/>
-          <FILE id="jHIW9z" name="GainSlider.h" compile="0" resource="0" file="Source/GUI/CircuitDisplay/GainSlider.h"/>
-          <FILE id="bUFxyA" name="MixSlider.cpp" compile="1" resource="0" file="Source/GUI/CircuitDisplay/MixSlider.cpp"/>
-          <FILE id="sZYIE5" name="MixSlider.h" compile="0" resource="0" file="Source/GUI/CircuitDisplay/MixSlider.h"/>
           <FILE id="bapsSo" name="SwitchButton.cpp" compile="1" resource="0"
                 file="Source/GUI/CircuitDisplay/SwitchButton.cpp"/>
           <FILE id="cBFymR" name="SwitchButton.h" compile="0" resource="0" file="Source/GUI/CircuitDisplay/SwitchButton.h"/>
         </GROUP>
         <GROUP id="{3C4F0661-D38E-59D2-6B51-6105B7821D8A}" name="VoltageDisplay">
-          <FILE id="hYhssf" name="VdSlider.cpp" compile="1" resource="0" file="Source/GUI/VoltageDisplay/VdSlider.cpp"/>
-          <FILE id="JM2jd7" name="VdSlider.h" compile="0" resource="0" file="Source/GUI/VoltageDisplay/VdSlider.h"/>
-          <FILE id="DrBV4c" name="VfSlider.cpp" compile="1" resource="0" file="Source/GUI/VoltageDisplay/VfSlider.cpp"/>
-          <FILE id="nvt2sE" name="VfSlider.h" compile="0" resource="0" file="Source/GUI/VoltageDisplay/VfSlider.h"/>
           <FILE id="WgXFfQ" name="VoltageDisplay.cpp" compile="1" resource="0"
                 file="Source/GUI/VoltageDisplay/VoltageDisplay.cpp"/>
           <FILE id="jIOOeW" name="VoltageDisplay.h" compile="0" resource="0"
@@ -104,7 +113,7 @@
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
   <EXPORTFORMATS>
-    <VS2022 targetFolder="Builds/VisualStudio2022">
+    <VS2022 targetFolder="Builds/VisualStudio2022" externalLibraries="&quot;Includes/*&quot;">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="Diodine"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="Diodine"/>
@@ -122,6 +131,7 @@
         <MODULEPATH id="juce_graphics" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../sdk/juce-7.0.2-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../../../../JUCE/modules"/>
       </MODULEPATHS>
     </VS2022>
   </EXPORTFORMATS>
@@ -135,6 +145,7 @@
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

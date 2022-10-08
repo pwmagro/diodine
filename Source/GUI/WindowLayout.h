@@ -18,6 +18,8 @@
 #include "VoltageDisplay/VoltageDisplay.h"
 #include "TimingDisplay/TimingDisplay.h"
 #include "Misc/Logo.h"
+#include "Misc/HueControl.h"
+#include "CustomLooks/Styles.h"
 
 class WindowLayout : public juce::Component
 {
@@ -28,6 +30,7 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+    float x = 0;
 private:
     xynth::GuiData& guiData;
 
@@ -48,6 +51,9 @@ private:
 
     // Miscellaneous items
     Logo logo;
+
+    WDYM::HueControl hue;
+    xynth::FullSlider mixSlider;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WindowLayout)
 };

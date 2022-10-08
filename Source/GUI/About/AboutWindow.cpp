@@ -25,12 +25,12 @@ void AboutWindow::paint (juce::Graphics& g)
     auto rect = getLocalBounds().toFloat();
     auto& lnf = guiData.getLnf();
 
-    g.setColour(lnf.getBase1().darker());
+    g.setColour(lnf.getBgColor().darker());
     g.fillRoundedRectangle(rect, 8.f);
-    g.setColour(lnf.getNeutral1());
+    g.setColour(lnf.getOutlineColor());
     g.drawRoundedRectangle(rect.reduced(1.f), 8.f, 2.f);
 
-    g.setColour (lnf.getAccent2());
+    g.setColour (lnf.getFgColor());
     g.setFont(lnf.getCustomFontSemiBold());
     g.drawText("About us", rect.removeFromTop(60.f), juce::Justification::centred);
 
@@ -38,7 +38,7 @@ void AboutWindow::paint (juce::Graphics& g)
 
     rect.removeFromTop(48.f);
     auto textRect = rect.reduced(20.f, 0.f);
-    g.setColour(lnf.getNeutral1().brighter(1.f));
+    g.setColour(lnf.getOutlineColor().brighter(1.f));
     g.setFont(lnf.getCustomFontRegular());
     g.drawMultiLineText("        Skybreak was born on Janurary 17th, 2019 and died on saturday. "
         "Did you know: he originally developed the first lephonk plugin? from paper "

@@ -18,8 +18,12 @@
 #define VF_ID       "FORWARD_VOLTAGE"
 #define VB_ID       "BREAKDOWN_VOLTAGE"
 #define TRR_ID      "RECOVERY_TIME"
+#define TRR_MAG_ID  "TRR_MAGNITUDE"
+#define TRR_SKEW_ID "TRR_SKEW"
 #define MIX_ID      "MIX"
 #define DC_OFF_ID   "DC_OFF"
+#define HUE_ID      "HUE"
+#define ABOUT_ID    "ABOUT"
 
 // Parameter names
 #define GAIN_NAME       "Gain"
@@ -29,8 +33,12 @@
 #define VF_NAME         "Forward Voltage"
 #define VB_NAME         "Breakdown Voltage"
 #define TRR_NAME        "Reverse Recovery Time"
+#define TRR_MAG_NAME    "Reverse Recovery Magnitude"
+#define TRR_SKEW_NAME   "Reverse Recovery Skew"
 #define MIX_NAME        "Mix"
 #define DC_OFF_NAME     "Remove DC Offset"
+#define HUE_NAME        "UI Hue"
+#define ABOUT_NAME      "About"
 
 // Fonts
 #define FONT_MAIN       BinaryData::RalewayMedium_ttf
@@ -50,4 +58,5 @@
 #define WIDTH               720u
 #define HEIGHT              520u
 #define MAX_SCALE           2.f
-#define WINDOW_SCALE_ID     "WINDOW_SCALE"
+#define LOCAL_WIDTH_ID      "WIDTH"
+#define LOCAL_HEIGHT_ID     "HEIGHT"

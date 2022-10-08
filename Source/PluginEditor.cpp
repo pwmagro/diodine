@@ -28,10 +28,20 @@ DiodineAudioProcessorEditor::DiodineAudioProcessorEditor (DiodineAudioProcessor&
     fileOptions.storageFormat = juce::PropertiesFile::storeAsXML;
     properties.setStorageParameters(fileOptions);
 
+    // Load global plugin scale
+    auto* propertiesFile = properties.getUserSettings();
+    if (propertiesFile) {
+        localWidth = propertiesFile->getDoubleValue(LOCAL_WIDTH_ID, localWidth);
+        localHeight = propertiesFile->getDoubleValue(LOCAL_HEIGHT_ID, localHeight);
+    }
+
     // Set plugin window dimensions and scale
-    setSize(double(WIDTH), double(HEIGHT));
-    juce::Rectangle<int> defaultSize(WIDTH, HEIGHT);
-    windowLayout.setBounds(defaultSize);
+    setSize(double(localWidth), double(localHeight));
+    juce::Rectangle<float> defaultSize(localWidth, localHeight);
+    windowLayout.setBounds(defaultSize.toNearestInt());
+
+    setResizable(true, false);
+    setResizeLimits(WIDTH, HEIGHT, WIDTH * 2, HEIGHT * 2);
 
     const int skin = properties.getUserSettings()->getIntValue("Skin", 0);
     guiData.updateLnf(skin);
@@ -49,4 +59,14 @@ void DiodineAudioProcessorEditor::paint (juce::Graphics& g)
 }
 
 void DiodineAudioProcessorEditor::resized() {
+    localWidth = getWidth();
+    localHeight = getHeight();
+
+    properties.getUserSettings()->setValue(LOCAL_WIDTH_ID, localWidth);
+    properties.getUserSettings()->setValue(LOCAL_HEIGHT_ID, localHeight);
+
+    properties.saveIfNeeded();
+
+    windowLayout.setBounds(0, 0, localWidth, localHeight);
+    
 }

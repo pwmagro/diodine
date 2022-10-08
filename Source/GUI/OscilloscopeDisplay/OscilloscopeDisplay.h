@@ -11,17 +11,23 @@
 #pragma once
 #include <JuceHeader.h>
 #include "../Utils/GuiData.h"
+#include "../../Common/RingBuffer.h"
 
-class OscilloscopeDisplay : public juce::Component {
+class OscilloscopeDisplay : public juce::Component, juce::Timer {
 public:
-    OscilloscopeDisplay(xynth::GuiData& g);
+    OscilloscopeDisplay(xynth::GuiData& g, xynth::RingBuffer* r);
     void paint(juce::Graphics& g);
 
 private:
-    //GainSlider gainSlider;
-    //MixSlider mixSlider;
-    //SwitchButton diode1Switch;
-    //SwitchButton diode2Switch;
-
     xynth::GuiData& guiData;
+
+    void timerCallback() override;
+};
+
+
+class A {
+public:
+    A();
+    ~A();
+
 };

@@ -13,17 +13,24 @@
 #include "../Utils/GuiData.h"
 
 #include "TimingGraph.h"
-#include "TrrSlider.h"
 
-class TimingDisplay : public juce::Component {
+class TimingDisplay : public juce::Component, juce::Timer {
 public:
     TimingDisplay(xynth::GuiData& g);
     void paint(juce::Graphics& g);
 private:
+    void timerCallback() override { repaint(); }
+
     juce::Slider trrSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> trrAttach;
+
+    juce::Slider trrSkew;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> skewAttach;
+
+    juce::Slider trrMagSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> trrMagAttach;
     
-    //TimingGraph timingGraph;
+    const int len = 100;
 
     xynth::GuiData& guiData;
 };

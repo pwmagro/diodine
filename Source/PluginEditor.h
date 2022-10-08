@@ -30,7 +30,9 @@ public:
 
 private:
     juce::ApplicationProperties properties;
-    double scale = 1.f;
+    double localWidth = WIDTH;
+    double localHeight = HEIGHT;
+    double scale = 1; // unused but guiData wants it i guess
     xynth::GuiData guiData;
     WindowLayout windowLayout;
 

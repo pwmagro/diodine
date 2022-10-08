@@ -12,11 +12,9 @@
 #include <JuceHeader.h>
 #include "../Utils/GuiData.h"
 
-#include "VdSlider.h"
-#include "VfSlider.h"
 #include "VoltageGraph.h"
 
-class VoltageDisplay : public juce::Component {
+class VoltageDisplay : public juce::Component, juce::Timer {
 public:
     VoltageDisplay(xynth::GuiData& g);
     void paint(juce::Graphics& g);
@@ -32,4 +30,12 @@ private:
     //VoltageGraph voltageGraph;
 
     xynth::GuiData& guiData;
+
+    void drawWaveshaper(juce::Rectangle<int> rect, juce::Graphics& g);
+    juce::Path waveshape;
+    
+    void timerCallback() override;
+
+    float lastXPos = 0;
+    float lastXNeg = 0;
 };

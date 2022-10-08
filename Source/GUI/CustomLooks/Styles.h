@@ -12,8 +12,8 @@
 #include <JuceHeader.h>
 
 namespace WDYM {
-    static const juce::Colour FgColor = juce::Colour::fromRGB(0x88u, 0x90u, 0x88u);
-    static const juce::Colour BgColor = juce::Colour::fromRGB(0x1Cu, 0x1Cu, 0x1Eu);
-    static const juce::Colour TextColor = juce::Colour::fromRGB(0x8Au, 0xDFu, 0xCEu);
-    static const juce::Colour OutlineColor = juce::Colour::fromRGB(0xFu, 0xFu, 0x16u);
+    static juce::Colour FgColor(float hue) { return juce::Colour::fromHSV(hue, 0.1f, 0.5f, 1.f); }
+    static juce::Colour BgColor(float hue) { return juce::Colour::fromHSV(hue, 0.f, 0.15f, 1.f); }
+    static juce::Colour TextColor(float hue) { return juce::Colour::fromHSV(hue, 0.8f, 0.9f, 1.f); }
+    static juce::Colour OutlineColor(float hue) { return juce::Colour::fromHSV(hue, 0.f, 0.1f, 1.f); }
 }

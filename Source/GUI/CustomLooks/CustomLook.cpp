@@ -17,27 +17,68 @@ namespace juce
         // Ensures the background of popup menus is transparent
         // allows corners to be rounded
         setColour(PopupMenu::backgroundColourId, Colours::black.withAlpha(0.0f));
+        bg_xml = juce::parseXML(BinaryData::bg_svg);
+        bg_svg = juce::Drawable::createFromSVG(*bg_xml);
+    }
+
+    void CustomLook::drawMainBackground(Graphics& g, Rectangle<int> area) {
+        bg_svg->setTransformToFit(area.toFloat(), juce::RectanglePlacement::stretchToFit);
+        bg_svg->draw(g, 1, juce::AffineTransform());
+
+        juce::ColourGradient over(Colours::transparentBlack, area.getTopLeft().toFloat(), getTextColor().withSaturation(0.15).darker(2).withAlpha(0.5f).withRotatedHue(-0.15f), area.getBottomLeft().toFloat(), false);
+        g.setGradientFill(over);
+        g.fillRect(area);
     }
 
     void CustomLook::drawSectionBackground(Graphics& g, Rectangle<int> area)
     {
-        g.setColour(getBase1());
-        g.fillRoundedRectangle(area.toFloat(), 5.f);
     }
 
-    void CustomLook::drawGraphBackground(Graphics& g, Rectangle<float> area, float)
+    void CustomLook::drawGraphBackground(Graphics& g, Rectangle<float> area, float amplitude = 1)
     {
-        g.setColour(getBase1());
-        g.fillRoundedRectangle(area, 8.f);
+        const float division = 7;
+        const int   divisint = (int)division;
+        float lineFreq = std::pow(2, std::max(((int)(amplitude) / divisint), 1));
+        float lineFreqSmall = std::pow(2, std::max(((int)(amplitude + division) / divisint), 1));
+        float smallOpacity = ((amplitude / division) - (int)(amplitude / division));
 
-        g.setColour(getNeutral1().withAlpha(0.5f));
-        g.drawLine(area.getCentreX(), area.getY(), area.getCentreX(), area.getBottom(), 2.f);
-        g.drawLine(area.getX(), area.getCentreY(), area.getRight(), area.getCentreY(), 2.f);
+        g.setColour(juce::Colours::black.withAlpha(0.4f));
+        g.fillRoundedRectangle(area, 3.f);
+
+        g.setColour(getFgColor().withAlpha(0.1f));
+        g.drawLine(area.getCentreX(), area.getY(), area.getCentreX(), area.getBottom(), 1.f);
+        g.drawLine(area.getX(), area.getCentreY(), area.getRight(), area.getCentreY(), 1.f);
+
+        g.setColour(getFgColor().withAlpha(0.4f * (1 - smallOpacity)));
+        for (float i = 0; i < amplitude; i += lineFreq) {
+            auto x = area.getWidth() * i / (amplitude * 2);
+            g.drawLine(area.getCentreX() + x, area.getY(), area.getCentreX() + x, area.getBottom(), 1.f);
+            g.drawLine(area.getCentreX() - x, area.getY(), area.getCentreX() - x, area.getBottom(), 1.f);
+        }
+
+        for (float j = 0; j <= amplitude; j += lineFreq) {
+            auto y = area.getHeight() * j / (amplitude * 2);
+            g.drawLine(area.getX(), area.getCentreY() + y, area.getRight(), area.getCentreY() + y, 1.f);
+            g.drawLine(area.getX(), area.getCentreY() - y, area.getRight(), area.getCentreY() - y, 1.f);
+        }
+
+        g.setOpacity(0.4f * smallOpacity);
+        for (float i = 0; i < amplitude; i += lineFreqSmall) {
+            auto x = area.getWidth() * i / (amplitude * 2);
+            g.drawLine(area.getCentreX() + x, area.getY(), area.getCentreX() + x, area.getBottom(), 1.f);
+            g.drawLine(area.getCentreX() - x, area.getY(), area.getCentreX() - x, area.getBottom(), 1.f);
+        }
+
+        for (float j = 0; j <= amplitude; j += lineFreqSmall) {
+            auto y = area.getHeight() * j / (amplitude * 2);
+            g.drawLine(area.getX(), area.getCentreY() + y, area.getRight(), area.getCentreY() + y, 1.f);
+            g.drawLine(area.getX(), area.getCentreY() - y, area.getRight(), area.getCentreY() - y, 1.f);
+        }
     }
 
     void CustomLook::drawGraphForeground(Graphics& g, Rectangle<float> area)
     {
-        g.setColour(getAccent2());
+        g.setColour(getFgColor());
         g.drawRoundedRectangle(area.reduced(0.75f), 8.f, 2.f);
     }
 
@@ -63,7 +104,7 @@ namespace juce
         // Draw background circle
         Rectangle<float> rect(x, y, width, height);
         rect = rect.withSizeKeepingCentre(radius * 2.f, radius * 2.f);
-        g.setColour(getBase1());
+        g.setColour(getBgColor());
         g.fillEllipse(rect.reduced(0.1f));
 
         // current angle of the slider
@@ -71,22 +112,37 @@ namespace juce
 
         radius = juce::jmin(width / 2, height / 2) - thickness * 0.5f;
 
-        const auto bgColour = getNeutral1();
-        const auto mainColour = isLarge ? getAccent1() : getAccent2();
+        const auto bgColour = getOutlineColor();
+        const auto mainColour = getTextColor();
 
         // Draw path of the slider backgound (in darker background colour)
         juce::Path backgroundArc;
         backgroundArc.addCentredArc(centreX, centreY, radius, radius, 0.0f, rotaryStartAngle, rotaryEndAngle, true);
-        g.setColour(bgColour);
-        g.strokePath(backgroundArc, juce::PathStrokeType(thickness, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+        
 
-        // Draw path of slider foreground (in white)
-        juce::Path foregroundArc;
-        foregroundArc.addCentredArc(centreX, centreY, radius, radius, 0.0f, rotaryStartAngle, angle, true);
-        g.setColour(mainColour);
-        g.strokePath(foregroundArc, juce::PathStrokeType(thickness, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+        if (slider.getRotaryParameters().stopAtEnd) {    
+            // Draw path of slider foreground (in white)
+            g.setColour(bgColour);
+            g.strokePath(backgroundArc, juce::PathStrokeType(thickness, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+            juce::Path foregroundArc;
+            foregroundArc.addCentredArc(centreX, centreY, radius, radius, 0.0f, rotaryStartAngle, angle, true);
+            g.setColour(mainColour);
+            g.strokePath(foregroundArc, juce::PathStrokeType(thickness, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+        }
 
-        if (isLarge)
+        else {
+            g.setColour(getTextColor().darker(1));
+            g.strokePath(backgroundArc, juce::PathStrokeType(thickness, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+            juce::Point<float> start(centreX + 0.5f * radius * cos(angle), centreY + 0.6f * radius * sin(angle));
+            juce::Point<float> end(centreX + radius * cos(angle), centreY + radius * sin(angle));
+            juce::Path indicator;
+            indicator.startNewSubPath(start);
+            indicator.lineTo(end);
+            g.setColour(mainColour);
+            g.strokePath(indicator, juce::PathStrokeType(thickness, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+        }
+
+        if (isLarge && slider.getRotaryParameters().stopAtEnd)
         {
             g.setFont(getCustomFontMedium().withHeight(30));
             g.drawText(String(std::round(slider.getValue())), rect, Justification::centred);
@@ -105,15 +161,15 @@ namespace juce
         // Slider track
         Point<float> start = isHorizontal ? Point<float>(x, y + (height / 2.f)) : Point<float>(x + (width / 2.f), y);
         Point<float> end = isHorizontal ? Point<float>(x + width, y + (height / 2.f)) : Point<float>(x + (width / 2.f), y + height);
-        g.setColour(getAccent2());
+        g.setColour(getFgColor().darker(0.5f));
         g.setOpacity(isHovered ? 1.f : 0.75f);
         g.drawLine(Line<float>(start, end), 4.f);
 
-        g.setColour(getAccent1());
+        g.setColour(getTextColor());
 
         float newWidth = 6.f;
         if (isHovered)
-            newWidth = std::max((double)6.f, (isHorizontal ? width : height) * 0.15);
+            newWidth = 8.f;
         else
             newWidth = 6.f;
 
@@ -131,14 +187,14 @@ namespace juce
         auto rect = button.getLocalBounds().toFloat();
 
         // Draw background
-        auto bgColour = button.getToggleState() ? getAccent2() : getNeutral1();
+        auto bgColour = button.getToggleState() ? getFgColor() : getOutlineColor();
         bgColour = bgColour.brighter(shouldDrawButtonAsHighlighted ? 0.1f : 0.f);
         bgColour = bgColour.darker(shouldDrawButtonAsDown ? 0.2f : 0.f);
         g.setColour(bgColour);
         g.fillRoundedRectangle(rect, 6.f);
 
         // Draw power symbol
-        g.setColour(getBase1());
+        g.setColour(getBgColor());
         const float centreX = rect.getCentreX();
         const float centreY = rect.getCentreY();
 

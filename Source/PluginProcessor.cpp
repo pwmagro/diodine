@@ -21,7 +21,7 @@ DiodineAudioProcessor::DiodineAudioProcessor()
                      #endif
                        ),
     treeState (*this, nullptr, "Parameters", createParameters()),
-    diodine()
+    diodine(), fixedBuffer(2050)
 #endif
 {
 
@@ -142,6 +142,7 @@ void DiodineAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
         buffer.clear (i, 0, buffer.getNumSamples());
 
     diodine.process(buffer, treeState);
+    fixedBuffer.process(buffer);
 }
 
 //==============================================================================
@@ -153,22 +154,26 @@ bool DiodineAudioProcessor::hasEditor() const
 juce::AudioProcessorEditor* DiodineAudioProcessor::createEditor()
 {
     return new DiodineAudioProcessorEditor(*this);
-    //return new DiodineAudioProcessorEditor (*this);
 }
 
 //==============================================================================
-void DiodineAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void DiodineAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
-
+    auto state = treeState.copyState();
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
 }
 
-void DiodineAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void DiodineAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+
+    // 'If' statements are for error checking
+    if (xmlState != nullptr) {
+        if (xmlState->hasTagName(treeState.state.getType())) {
+            treeState.replaceState(juce::ValueTree::fromXml(*xmlState));
+        }
+    }
 }
 
 //==============================================================================
@@ -182,12 +187,16 @@ juce::AudioProcessorValueTreeState::ParameterLayout DiodineAudioProcessor::creat
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(GAIN_ID, GAIN_NAME,  0.f,  20.f,   5.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(SAT_ID,  SAT_NAME,   0.f,   2.f,   0.2f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(VF_ID,   VF_NAME,    0.f,   5.f,   0.2f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(VB_ID,   VB_NAME,  -20.f,   0.f, -12.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(TRR_ID,  TRR_NAME,   0.f,  20.f,   2.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(MIX_ID,  MIX_NAME,   0.f,   1.f,   1.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(GAIN_ID, GAIN_NAME,         1.f,  20.f,   5.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(SAT_ID,  SAT_NAME,          0.f,   0.5f,  0.1f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(VF_ID,   VF_NAME,           0.f,   5.f,   0.2f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(VB_ID,   VB_NAME,         -20.f,   0.f, -12.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(TRR_ID,  TRR_NAME,          0.f,  20.f,   2.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(TRR_MAG_ID, TRR_MAG_NAME,   0.f,   1.f,   0.35f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(TRR_SKEW_ID, TRR_SKEW_NAME, 0.f,   0.7f,  0.1f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(MIX_ID,  MIX_NAME,          0.f,   2.f,   1.f));
+
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(HUE_ID, HUE_NAME, 0.f, 360.f, 25.f));
 
     params.push_back(std::make_unique<juce::AudioParameterBool>(DIODE_1_ID, DIODE_1_NAME, true ));
     params.push_back(std::make_unique<juce::AudioParameterBool>(DIODE_2_ID, DIODE_2_NAME, false));
