@@ -25,7 +25,7 @@ namespace juce
         bg_svg->setTransformToFit(area.toFloat(), juce::RectanglePlacement::stretchToFit);
         bg_svg->draw(g, 1, juce::AffineTransform());
 
-        juce::ColourGradient over(Colours::transparentBlack, area.getTopLeft().toFloat(), getTextColor().withSaturation(0.25).darker(2).withAlpha(0.5f).withRotatedHue(-0.25f), area.getBottomLeft().toFloat(), false);
+        juce::ColourGradient over(Colours::transparentBlack, area.getTopLeft().toFloat(), getTextColor().withSaturation(0.15).darker(2).withAlpha(0.5f).withRotatedHue(-0.15f), area.getBottomLeft().toFloat(), false);
         g.setGradientFill(over);
         g.fillRect(area);
     }
@@ -113,7 +113,7 @@ namespace juce
         radius = juce::jmin(width / 2, height / 2) - thickness * 0.5f;
 
         const auto bgColour = getOutlineColor();
-        const auto mainColour = isLarge ? getTextColor() : getFgColor();
+        const auto mainColour = getTextColor();
 
         // Draw path of the slider backgound (in darker background colour)
         juce::Path backgroundArc;

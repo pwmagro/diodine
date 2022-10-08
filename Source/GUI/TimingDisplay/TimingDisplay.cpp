@@ -66,21 +66,22 @@ void TimingDisplay::paint(juce::Graphics& g) {
     g.drawText(((juce::String)"Skew").toLowerCase(), labelRect.withTrimmedRight(labelRect.getWidth() / 2.f), juce::Justification::left);
 
     auto sliderRect = rect.removeFromBottom(40);
-    trrSlider.setBounds(sliderRect.withTrimmedLeft(sliderRect.getWidth() / 2.f));
-    trrSkew.setBounds(sliderRect.withTrimmedRight(sliderRect.getWidth() / 2.f));
+    auto trrRect = sliderRect.removeFromRight(sliderRect.getWidth() / 2.f);
+    trrSlider.setBounds(trrRect);
+    trrSkew.setBounds(sliderRect);
 
     g.setFont(lnf.getCustomFontRegular().withHeight(25));
     g.setColour(lnf.getTextColor());
 
     auto sliderPos = trrSlider.getPositionOfValue(trrSlider.getValue());
     auto newWidth = 80.f;
-    float x = sliderRect.getX();
-    float y = sliderRect.getY() - 25.f;
+    float x = trrRect.getX();
+    float y = trrRect.getY() - 25.f;
     auto width = trrSlider.getWidth();
-    juce::Rectangle<float> textRect(std::min(std::max((sliderPos - 20.f), x + 10.f), x + width - 90.f), y, newWidth, 25.f);
+    juce::Rectangle<float> textRect(std::min(std::max((sliderPos + x - (newWidth / 2.f)), x), trrRect.getRight() - newWidth), y, newWidth, 25.f);
 
     g.setColour(lnf.getTextColor());
-    g.drawText(trrSlider.getTextFromValue(trrSlider.getValue()), textRect.withTrimmedLeft(textRect.proportionOfWidth(0.5f)), juce::Justification::centred);
+    g.drawText(trrSlider.getTextFromValue(trrSlider.getValue()), textRect, juce::Justification::centred);
     
     rect.reduce(10, 10);
     rect.removeFromBottom(20.f);

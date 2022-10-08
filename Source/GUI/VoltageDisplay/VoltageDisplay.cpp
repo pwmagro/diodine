@@ -95,13 +95,13 @@ void VoltageDisplay::paint(juce::Graphics& g) {
     float vfx = vfSliderRect.getX();
     float vfy = vfSliderRect.getY() - 25.f;
     auto width = vfSlider.getWidth();
-    juce::Rectangle<float> vfTextRect(std::min(std::max((vfSliderPos - 20.f), vfx + 10.f), vfx + width - 90.f), vfy, newWidth, 25.f);
+    juce::Rectangle<float> vfTextRect(std::min(std::max((vfSliderPos + vfx - (newWidth / 2.f)), vfx), vfSliderRect.getRight() - newWidth), vfy, newWidth, 25.f);
     g.drawText(vfSlider.getTextFromValue(vfSlider.getValue()), vfTextRect, juce::Justification::centred);
 
     float vbx = vbSliderRect.getX();
     float vby = vbSliderRect.getY() - 25.f;
     width = vbSlider.getWidth();
-    juce::Rectangle<float> vbTextRect(std::min(std::max((vbSliderPos - 20.f), vbx + 10.f), vbx + width - 90.f), vby, newWidth, 25.f);
+    juce::Rectangle<float> vbTextRect(std::min(std::max((vbSliderPos + vbx - (newWidth / 2.f)), vbx), vbSliderRect.getRight() - newWidth), vby, newWidth, 25.f);
     g.drawText(vbSlider.getTextFromValue(vbSlider.getValue()), vbTextRect, juce::Justification::centred);
 
     // Create the waveshaper graph

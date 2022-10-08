@@ -87,7 +87,7 @@ void CircuitDisplay::paint(juce::Graphics& g) {
 
 
     g.setColour(guiData.getLnf().getFgColor());
-    g.strokePath(connections, juce::PathStrokeType(4.f));
+    g.strokePath(connections, juce::PathStrokeType(2.5f));
 
 #ifdef JUCE_DEBUG
 #endif
@@ -129,10 +129,10 @@ void CircuitDisplay::drawDiode(juce::Graphics& g, juce::Rectangle<float> bounds,
     diode.lineTo(bounds.getRight(), center.getY());
 
     g.setColour(guiData.getLnf().getFgColor());
-    g.strokePath(diode, juce::PathStrokeType(4.f));
+    g.strokePath(diode, juce::PathStrokeType(2.5f));
 }
 
-void CircuitDisplay::drawSwitch(juce::Graphics& g, juce::Rectangle<float> bounds, bool isOpen) {
+void CircuitDisplay::drawSwitch(juce::Graphics& g, juce::Rectangle<float> bounds, bool isClosed) {
     const float offset = 30;
     auto center = bounds.getCentre();
 
@@ -145,11 +145,11 @@ void CircuitDisplay::drawSwitch(juce::Graphics& g, juce::Rectangle<float> bounds
 
     sw.startNewSubPath(center.getX() - offset + 8, center.getY());
 
-    if (isOpen) {
-        sw.lineTo(center.getX() + offset - 12, center.getY() - (offset * 0.65f));
+    if (isClosed) {
+        sw.lineTo(center.getX() + offset - 8, center.getY());
     }
     else {
-        sw.lineTo(center.getX() + offset - 8, center.getY());
+        sw.lineTo(center.getX() + offset - 12, center.getY() - (offset * 0.65f));
     }
 
     sw.addEllipse(center.getX() + offset - 8, center.getY() - 4, 8, 8);
@@ -158,7 +158,7 @@ void CircuitDisplay::drawSwitch(juce::Graphics& g, juce::Rectangle<float> bounds
     sw.lineTo(bounds.getRight(), center.getY());
 
     g.setColour(guiData.getLnf().getFgColor());
-    g.strokePath(sw, juce::PathStrokeType(4.f));
+    g.strokePath(sw, juce::PathStrokeType(2.5f));
 }
 
 void CircuitDisplay::drawOpAmp(juce::Graphics& g, juce::Rectangle<float> bounds) {
@@ -181,5 +181,5 @@ void CircuitDisplay::drawOpAmp(juce::Graphics& g, juce::Rectangle<float> bounds)
     opAmp.lineTo(center.getX() + offset, center.getY());
 
     g.setColour(guiData.getLnf().getFgColor());
-    g.strokePath(opAmp, juce::PathStrokeType(4.f));
+    g.strokePath(opAmp, juce::PathStrokeType(2.5f));
 }
