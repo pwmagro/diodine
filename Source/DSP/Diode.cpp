@@ -51,12 +51,13 @@ namespace WDYM {
         diodeProperties.vf = apvts.getRawParameterValue(VF_ID)->load();
         diodeProperties.vb = apvts.getRawParameterValue(VB_ID)->load();
         diodeProperties.trr = apvts.getRawParameterValue(TRR_ID)->load();
+        diodeProperties.skew = apvts.getRawParameterValue(TRR_SKEW_ID)->load();
         diodeProperties.charge = apvts.getRawParameterValue(TRR_MAG_ID)->load();
         diodeProperties.gain = apvts.getRawParameterValue(GAIN_ID)->load();
         diodeProperties.sat = apvts.getRawParameterValue(SAT_ID)->load() * 10;
         diodeProperties.mix = apvts.getRawParameterValue(MIX_ID)->load();
 
-        if (diodeProperties.trr != lastTrr) {
+        if (diodeProperties.trr != lastTrr || diodeProperties.skew != lastSkew) {
             setTrr(diodeProperties.trr);
         }
 
@@ -167,30 +168,33 @@ namespace WDYM {
 
     void Diode::recover(juce::AudioBuffer<float>& buffer) {
         float c = diodeProperties.charge;
+        juce::AudioBuffer<float> dry;
+        dry.makeCopyOf(buffer);
 
         for (int n = 0; n < 2; n++) {
-            auto chr = buffer.getReadPointer(n);
+
+            auto chr = dry.getReadPointer(n);
             auto ch = buffer.getWritePointer(n);
 
-            if (lastSamples[n] * diodeProperties.gain > (diodeProperties.vf + 0.05) && chr[0] * diodeProperties.gain < diodeProperties.vf) {
+            if (lastSamples[n] * diodeProperties.gain> (diodeProperties.vf) && chr[0] * diodeProperties.gain < diodeProperties.vf) {
                 recoverScanner[n] = 0;
-                n == 0 ? rrStatus.left = rr[0] : rrStatus.right = rr[0];
+                n == 0 ? rrStatus.left = -rr[0] : rrStatus.right = -rr[0];
             }
             for (int s = 1; s < buffer.getNumSamples(); s++) {
-                if (chr[s - 1] * diodeProperties.gain > (diodeProperties.vf + 0.05) && chr[s] * diodeProperties.gain < diodeProperties.vf) {
+                if (chr[s - 1] * diodeProperties.gain > (diodeProperties.vf) && chr[s] * diodeProperties.gain < diodeProperties.vf) {
                     recoverScanner[n] = 0;
-                    n == 0 ? rrStatus.left = rr[0] : rrStatus.right = rr[0];
+                    n == 0 ? rrStatus.left = -rr[0] : rrStatus.right = -rr[0];
                 }
                 if (recoverScanner[n] < juce::roundFloatToInt(diodeProperties.trr * samplesPerMs - 1)) {
                     ch[s] = std::min(1.f, ch[s] + c * rr[recoverScanner[n]] * diodeProperties.vf / diodeProperties.gain);
-                    if ((rr[recoverScanner[n]]) > (n == 0 ? rrStatus.left : rrStatus.right))
-                        n == 0 ? rrStatus.left = rr[recoverScanner[n]] : rrStatus.right = rr[recoverScanner[n]];
+                    if ((abs(rr[recoverScanner[n]])) > (n == 0 ? rrStatus.left : rrStatus.right))
+                        n == 0 ? rrStatus.left = -rr[recoverScanner[n]] : rrStatus.right = -rr[recoverScanner[n]];
 
                     recoverScanner[n]++;
                 }
             }
-            rrStatus.left *= 0.95;
-            rrStatus.right *= 0.95;
+            rrStatus.left *= 0.97;
+            rrStatus.right *= 0.97;
         }
     }
 
@@ -199,15 +203,23 @@ namespace WDYM {
         lastTrr = trr;
 
         int trrInSamples = juce::roundFloatToInt(trr * samplesPerMs);
+        if (trrInSamples == 0) {
+            rr.push_back(0.f);
+            return;
+        }
+
         rr.clear();
-        
-        for (float i = 0; i <= trrInSamples; i++) {
-            float y = i / (float)trrInSamples;
-            if (trrInSamples == 0) {
-                y = 0;
-            }
+        float x;
+        float tension = diodeProperties.skew;
+        for (float i = 0; i < trrInSamples * tension; i++) {
+            x = i / (float)trrInSamples;
             
-            rr.push_back(charge * 12 * y * pow(1 - y, 4));
+            rr.push_back((x / pow(tension, 2)) * (x - 2 * tension));
+        }
+
+        for (float i = trrInSamples * tension; i <= trrInSamples; i++) {
+            x = i / (float)trrInSamples;
+            rr.push_back(-pow((x - 1) * (x + (1 - 2 * tension)) / ((tension - 1) * (1 - tension)), 2));
         }
     }
 

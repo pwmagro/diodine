@@ -61,10 +61,9 @@ void TimingDisplay::paint(juce::Graphics& g) {
     g.drawText(((juce::String)"mag").toLowerCase(), gainTextRect, juce::Justification::centredTop);
     trrMagSlider.setBounds(vertSliderRect);
 
-    auto labelRect = rect.removeFromBottom(20).withTrimmedLeft(10)
-        
-        ;
-    g.drawText(((juce::String)TRR_NAME).toLowerCase(), labelRect, juce::Justification::left);
+    auto labelRect = rect.removeFromBottom(20).withTrimmedLeft(10);
+    g.drawText(((juce::String)"Time").toLowerCase(), labelRect.withTrimmedLeft(labelRect.getWidth() / 2.f), juce::Justification::left);
+    g.drawText(((juce::String)"Skew").toLowerCase(), labelRect.withTrimmedRight(labelRect.getWidth() / 2.f), juce::Justification::left);
 
     auto sliderRect = rect.removeFromBottom(40);
     trrSlider.setBounds(sliderRect.withTrimmedLeft(sliderRect.getWidth() / 2.f));
@@ -81,7 +80,7 @@ void TimingDisplay::paint(juce::Graphics& g) {
     juce::Rectangle<float> textRect(std::min(std::max((sliderPos - 20.f), x + 10.f), x + width - 90.f), y, newWidth, 25.f);
 
     g.setColour(lnf.getTextColor());
-    g.drawText(trrSlider.getTextFromValue(trrSlider.getValue()), textRect, juce::Justification::centred);
+    g.drawText(trrSlider.getTextFromValue(trrSlider.getValue()), textRect.withTrimmedLeft(textRect.proportionOfWidth(0.5f)), juce::Justification::centred);
     
     rect.reduce(10, 10);
     rect.removeFromBottom(20.f);
@@ -92,18 +91,19 @@ void TimingDisplay::paint(juce::Graphics& g) {
     scannerLine.startNewSubPath(rect.getX(), rect.getCentreY());
 
     auto tension = trrSkew.getValue();
+    auto mag = trrMagSlider.getValue();
 
     float s = trrSlider.getValue() / trrSlider.getMaximum();
     for (float i = 0; i < tension; i += 1 / (float)rect.getWidth()) {
         // First section
-        auto y = -(i / pow(tension, 2)) * (2 * tension - i);
+        auto y = -(i / pow(tension, 2)) * (2 * tension - i) * mag;
         scannerLine.lineTo(rect.getX() + rect.getWidth() * i * s, rect.getCentreY() + y * rect.getHeight() * 0.47);
         if (s < 0.001) break;
     }
 
     for (float i = tension; i < 1; i += 1 / (float)rect.getWidth()) {
         // Second section
-        auto y = pow((i - 1) * (i + (1 - 2 * tension)) / ((tension - 1) * (1 - tension)), 4);
+        auto y = pow((i - 1) * (i + (1 - 2 * tension)) / ((tension - 1) * (1 - tension)), 2) * mag;
         scannerLine.lineTo(rect.getX() + rect.getWidth() * i * s, rect.getCentreY() - y * rect.getHeight() * 0.47);
         if (s < 0.001) break;
     }

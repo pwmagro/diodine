@@ -35,6 +35,7 @@ namespace WDYM {
             float vf = 0;
             float vb = 0;
             float trr = 0;
+            float skew = 0.2;
             float charge = 0;
             float gain = 0;
             float sat = 0;
@@ -57,6 +58,7 @@ namespace WDYM {
 
         std::vector<float> rr;
         float lastTrr;
+        float lastSkew;
         rrStatus_t rrStatus = { 0, 0 };
     };
 }

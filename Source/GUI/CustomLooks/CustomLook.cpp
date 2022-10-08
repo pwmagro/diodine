@@ -24,6 +24,10 @@ namespace juce
     void CustomLook::drawMainBackground(Graphics& g, Rectangle<int> area) {
         bg_svg->setTransformToFit(area.toFloat(), juce::RectanglePlacement::stretchToFit);
         bg_svg->draw(g, 1, juce::AffineTransform());
+
+        juce::ColourGradient over(Colours::transparentBlack, area.getTopLeft().toFloat(), getTextColor().withSaturation(0.25).darker(2).withAlpha(0.5f).withRotatedHue(-0.25f), area.getBottomLeft().toFloat(), false);
+        g.setGradientFill(over);
+        g.fillRect(area);
     }
 
     void CustomLook::drawSectionBackground(Graphics& g, Rectangle<int> area)
