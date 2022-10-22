@@ -106,6 +106,9 @@ void VoltageDisplay::paint(juce::Graphics& g) {
 
     // Create the waveshaper graph
     drawWaveshaper(rect, g);
+
+    // Draw a border
+    g.setColour(guiData.getLnf().getFgColor().darker(0.6));
     
 }
 
@@ -165,11 +168,13 @@ void VoltageDisplay::drawWaveshaper(juce::Rectangle<int> rect, juce::Graphics& g
         waveshape.lineTo(point);
     }
 
+    g.saveState();
+    g.reduceClipRegion(rect.toNearestInt());
+
     g.setColour(guiData.getLnf().getTextColor().withSaturation(1.f));
     g.strokePath(waveshape, juce::PathStrokeType(std::min(3.f, 24.f * xPos), juce::PathStrokeType::curved, juce::PathStrokeType::EndCapStyle::rounded));
 
-    // Draw a border
-    g.setColour(guiData.getLnf().getFgColor().darker(0.6));
+    g.restoreState();
     g.drawRoundedRectangle(rect.toFloat().expanded(2.f), 5.f, 4.f);
 }
 

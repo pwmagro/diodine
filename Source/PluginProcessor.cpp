@@ -194,7 +194,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout DiodineAudioProcessor::creat
     params.push_back(std::make_unique<juce::AudioParameterFloat>(TRR_ID,  TRR_NAME,          0.f,  20.f,   2.f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(TRR_MAG_ID, TRR_MAG_NAME,   0.f,   1.f,   0.35f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(TRR_SKEW_ID, TRR_SKEW_NAME, 0.f,   0.7f,  0.1f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(MIX_ID,  MIX_NAME,          0.f,   2.f,   1.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(MIX_ID,  MIX_NAME,          0.f,   1.f,   1.f));
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>(HUE_ID, HUE_NAME, 0.f, 360.f, 25.f));
 

@@ -26,9 +26,9 @@ void OscilloscopeDisplay::paint(juce::Graphics& g) {
 
     juce::Path line;
     line.clear();
-    line.startNewSubPath(rect.getX(), rect.getCentreY() - fixedBuffer.getSample(0) * 0.5 * rect.getHeight());
+    line.startNewSubPath(rect.getX(), rect.getCentreY() - juce::jlimit<float>(-0.5f, 0.5f, fixedBuffer.getSample(0) * 0.5 * rect.getHeight()));
     for (int i = 1; i < oscLength; i += 10) {
-        line.lineTo(rect.getX() + i * rect.getWidth() / oscLength, rect.getCentreY() - fixedBuffer.getSample(i) * 0.5 * rect.getHeight());
+        line.lineTo(rect.getX() + i * rect.getWidth() / oscLength, rect.getCentreY() - juce::jlimit<float>(-0.5f * rect.getHeight(), 0.5f * rect.getHeight(), fixedBuffer.getSample(i) * 0.5 * rect.getHeight()));
     }
 
     g.setColour(guiData.getLnf().getTextColor().withSaturation(1.f));

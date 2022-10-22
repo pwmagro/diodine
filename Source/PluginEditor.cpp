@@ -56,6 +56,7 @@ DiodineAudioProcessorEditor::~DiodineAudioProcessorEditor()
 //==============================================================================
 void DiodineAudioProcessorEditor::paint (juce::Graphics& g)
 {
+    g.reduceClipRegion(getLocalBounds());
 }
 
 void DiodineAudioProcessorEditor::resized() {
